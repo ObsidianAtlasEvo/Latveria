@@ -1,0 +1,270 @@
+{
+ "mask.lock": {
+  "sounds": [
+   {
+    "name": "doom_sovereign:mask/lock",
+    "stream": false
+   }
+  ],
+  "subtitle": "subtitles.doom_sovereign.mask.lock"
+ },
+ "mask.seal": {
+  "sounds": [
+   {
+    "name": "doom_sovereign:mask/seal",
+    "stream": false
+   }
+  ],
+  "subtitle": "subtitles.doom_sovereign.mask.seal"
+ },
+ "armor.servo": {
+  "sounds": [
+   {
+    "name": "doom_sovereign:armor/servo",
+    "stream": false
+   }
+  ],
+  "subtitle": "subtitles.doom_sovereign.armor.servo"
+ },
+ "armor.step_heavy": {
+  "sounds": [
+   {
+    "name": "doom_sovereign:armor/step_heavy_1",
+    "stream": false
+   },
+   {
+    "name": "doom_sovereign:armor/step_heavy_2",
+    "stream": false
+   },
+   {
+    "name": "doom_sovereign:armor/step_heavy_3",
+    "stream": false
+   }
+  ],
+  "subtitle": "subtitles.doom_sovereign.armor.step_heavy"
+ },
+ "armor.impact_heavy": {
+  "sounds": [
+   {
+    "name": "doom_sovereign:armor/impact_heavy",
+    "stream": false
+   }
+  ],
+  "subtitle": "subtitles.doom_sovereign.armor.impact_heavy"
+ },
+ "armor.shutdown": {
+  "sounds": [
+   {
+    "name": "doom_sovereign:armor/shutdown",
+    "stream": false
+   }
+  ],
+  "subtitle": "subtitles.doom_sovereign.armor.shutdown"
+ },
+ "flight.thruster_ignition": {
+  "sounds": [
+   {
+    "name": "doom_sovereign:flight/thruster_ignition",
+    "stream": false
+   }
+  ],
+  "subtitle": "subtitles.doom_sovereign.flight.thruster_ignition"
+ },
+ "flight.loop": {
+  "sounds": [
+   {
+    "name": "doom_sovereign:flight/loop",
+    "stream": true
+   }
+  ],
+  "subtitle": "subtitles.doom_sovereign.flight.loop"
+ },
+ "flight.boost": {
+  "sounds": [
+   {
+    "name": "doom_sovereign:flight/boost",
+    "stream": false
+   }
+  ],
+  "subtitle": "subtitles.doom_sovereign.flight.boost"
+ },
+ "gauntlet.charge": {
+  "sounds": [
+   {
+    "name": "doom_sovereign:gauntlet/charge",
+    "stream": false
+   }
+  ],
+  "subtitle": "subtitles.doom_sovereign.gauntlet.charge"
+ },
+ "gauntlet.discharge": {
+  "sounds": [
+   {
+    "name": "doom_sovereign:gauntlet/discharge",
+    "stream": false
+   }
+  ],
+  "subtitle": "subtitles.doom_sovereign.gauntlet.discharge"
+ },
+ "gauntlet.heavy_blast": {
+  "sounds": [
+   {
+    "name": "doom_sovereign:gauntlet/heavy_blast",
+    "stream": false
+   }
+  ],
+  "subtitle": "subtitles.doom_sovereign.gauntlet.heavy_blast"
+ },
+ "gauntlet.beam_loop": {
+  "sounds": [
+   {
+    "name": "doom_sovereign:gauntlet/beam_loop",
+    "stream": true
+   }
+  ],
+  "subtitle": "subtitles.doom_sovereign.gauntlet.beam_loop"
+ },
+ "field.activate": {
+  "sounds": [
+   {
+    "name": "doom_sovereign:field/activate",
+    "stream": false
+   }
+  ],
+  "subtitle": "subtitles.doom_sovereign.field.activate"
+ },
+ "field.hum": {
+  "sounds": [
+   {
+    "name": "doom_sovereign:field/hum",
+    "stream": true
+   }
+  ],
+  "subtitle": "subtitles.doom_sovereign.field.hum"
+ },
+ "field.impact": {
+  "sounds": [
+   {
+    "name": "doom_sovereign:field/impact",
+    "stream": false
+   }
+  ],
+  "subtitle": "subtitles.doom_sovereign.field.impact"
+ },
+ "field.collapse": {
+  "sounds": [
+   {
+    "name": "doom_sovereign:field/collapse",
+    "stream": false
+   }
+  ],
+  "subtitle": "subtitles.doom_sovereign.field.collapse"
+ },
+ "scan.pulse": {
+  "sounds": [
+   {
+    "name": "doom_sovereign:scan/pulse",
+    "stream": false
+   }
+  ],
+  "subtitle": "subtitles.doom_sovereign.scan.pulse"
+ },
+ "tech.override": {
+  "sounds": [
+   {
+    "name": "doom_sovereign:tech/override",
+    "stream": false
+   }
+  ],
+  "subtitle": "subtitles.doom_sovereign.tech.override"
+ },
+ "doombot.servo": {
+  "sounds": [
+   {
+    "name": "doom_sovereign:doombot/servo",
+    "stream": false
+   }
+  ],
+  "subtitle": "subtitles.doom_sovereign.doombot.servo"
+ },
+ "doombot.step_heavy": {
+  "sounds": [
+   {
+    "name": "doom_sovereign:doombot/step_heavy_1",
+    "stream": false
+   },
+   {
+    "name": "doom_sovereign:doombot/step_heavy_2",
+    "stream": false
+   },
+   {
+    "name": "doom_sovereign:doombot/step_heavy_3",
+    "stream": false
+   }
+  ],
+  "subtitle": "subtitles.doom_sovereign.doombot.step_heavy"
+ },
+ "doombot.diagnostic": {
+  "sounds": [
+   {
+    "name": "doom_sovereign:doombot/diagnostic",
+    "stream": false
+   }
+  ],
+  "subtitle": "subtitles.doom_sovereign.doombot.diagnostic"
+ },
+ "doombot.shutdown": {
+  "sounds": [
+   {
+    "name": "doom_sovereign:doombot/shutdown",
+    "stream": false
+   }
+  ],
+  "subtitle": "subtitles.doom_sovereign.doombot.shutdown"
+ },
+ "time_platform.charge": {
+  "sounds": [
+   {
+    "name": "doom_sovereign:time_platform/charge",
+    "stream": false
+   }
+  ],
+  "subtitle": "subtitles.doom_sovereign.time_platform.charge"
+ },
+ "time_platform.discharge": {
+  "sounds": [
+   {
+    "name": "doom_sovereign:time_platform/discharge",
+    "stream": false
+   }
+  ],
+  "subtitle": "subtitles.doom_sovereign.time_platform.discharge"
+ },
+ "sorcery.arcane_cast": {
+  "sounds": [
+   {
+    "name": "doom_sovereign:sorcery/arcane_cast",
+    "stream": false
+   }
+  ],
+  "subtitle": "subtitles.doom_sovereign.sorcery.arcane_cast"
+ },
+ "sorcery.ritual_resonance": {
+  "sounds": [
+   {
+    "name": "doom_sovereign:sorcery/ritual_resonance",
+    "stream": true
+   }
+  ],
+  "subtitle": "subtitles.doom_sovereign.sorcery.ritual_resonance"
+ },
+ "sorcery.teleport": {
+  "sounds": [
+   {
+    "name": "doom_sovereign:sorcery/teleport",
+    "stream": false
+   }
+  ],
+  "subtitle": "subtitles.doom_sovereign.sorcery.teleport"
+ }
+}

@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "doom_sovereign:royal"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "doom_sovereign:royal"
+      }
+    ]
+  }
+}

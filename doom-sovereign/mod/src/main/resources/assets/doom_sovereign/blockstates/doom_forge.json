@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "doom_sovereign:block/doom_forge"
+    },
+    "facing=east": {
+      "model": "doom_sovereign:block/doom_forge",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "doom_sovereign:block/doom_forge",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "doom_sovereign:block/doom_forge",
+      "y": 270
+    }
+  }
+}

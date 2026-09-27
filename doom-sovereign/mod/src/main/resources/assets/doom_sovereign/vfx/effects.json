@@ -1,0 +1,456 @@
+{
+ "schema": 1,
+ "effects": [
+  {
+   "id": "repulsor_idle",
+   "family": "tech",
+   "types": [
+    "repulsor_flare"
+   ],
+   "color": "arcane #65E86B core #D2FFD4",
+   "lifetime": [
+    6,
+    10
+   ],
+   "count": "2 per second per emitter (palms, boots)",
+   "size": [
+    0.06,
+    0.12,
+    0.02
+   ],
+   "motion": "downward 0.12 b/t + inherited velocity, drag 0.85",
+   "opacity": "1.0 -> 0 (ease-out)",
+   "emission": "point at palm_emitter / boot locator",
+   "budget": 8,
+   "reduced": "Decreased: 1/s; Minimal: none (the emissive lens still glows)"
+  },
+  {
+   "id": "repulsor_burst",
+   "family": "tech",
+   "types": [
+    "repulsor_flare",
+    "smoke_puff"
+   ],
+   "color": "arcane core, steel smoke",
+   "lifetime": [
+    8,
+    14
+   ],
+   "count": "12 flares + 6 smoke, once",
+   "size": [
+    0.1,
+    0.25,
+    0.05
+   ],
+   "motion": "radial in the ground plane 0.25 b/t, drag 0.8",
+   "opacity": "1.0 -> 0",
+   "emission": "disc r=0.4 under each boot",
+   "budget": 18,
+   "reduced": "Decreased: 6 + 3; Minimal: 2 flares"
+  },
+  {
+   "id": "repulsor_trail",
+   "family": "tech",
+   "types": [
+    "repulsor_flare"
+   ],
+   "color": "arcane",
+   "lifetime": [
+    5,
+    8
+   ],
+   "count": "1 per tick per emitter while cruising",
+   "size": [
+    0.08,
+    0.1,
+    0.02
+   ],
+   "motion": "opposite to flight direction 0.2 b/t, no gravity",
+   "opacity": "0.8 -> 0",
+   "emission": "palm and boot locators",
+   "budget": 40,
+   "reduced": "Decreased: every 3rd tick; Minimal: none"
+  },
+  {
+   "id": "repulsor_trail_boost",
+   "family": "tech",
+   "types": [
+    "repulsor_flare",
+    "energy_spark"
+   ],
+   "color": "arcane core, white-green sparks",
+   "lifetime": [
+    6,
+    10
+   ],
+   "count": "2 flares + 1 spark per tick per boot",
+   "size": [
+    0.12,
+    0.18,
+    0.03
+   ],
+   "motion": "trail + random 0.05 jitter",
+   "opacity": "1.0 -> 0",
+   "emission": "boot locators",
+   "budget": 80,
+   "reduced": "Decreased: half; Minimal: 1 flare every 4 ticks"
+  },
+  {
+   "id": "gauntlet_charge",
+   "family": "tech",
+   "types": [
+    "energy_spark"
+   ],
+   "color": "arcane",
+   "lifetime": [
+    4,
+    8
+   ],
+   "count": "rises 1 -> 6 per tick with charge",
+   "size": [
+    0.04,
+    0.08,
+    0.02
+   ],
+   "motion": "converges on the palm from r=0.8",
+   "opacity": "0.4 -> 1.0 -> 0",
+   "emission": "sphere shell r=0.8 around palm_emitter",
+   "budget": 48,
+   "reduced": "Decreased: 1/3; Minimal: none (lens scale pulse remains)"
+  },
+  {
+   "id": "gauntlet_muzzle",
+   "family": "tech",
+   "types": [
+    "repulsor_flare",
+    "energy_spark"
+   ],
+   "color": "arcane core",
+   "lifetime": [
+    3,
+    5
+   ],
+   "count": "1 flare + 6 sparks, once",
+   "size": [
+    0.2,
+    0.35,
+    0.0
+   ],
+   "motion": "sparks cone 25 deg along the shot, 0.35 b/t",
+   "opacity": "1.0 -> 0 fast",
+   "emission": "palm_emitter",
+   "budget": 7,
+   "reduced": "Decreased: flare + 2; Minimal: flare only"
+  },
+  {
+   "id": "gauntlet_heavy_muzzle",
+   "family": "tech",
+   "types": [
+    "repulsor_flare",
+    "energy_spark",
+    "shock_ring"
+   ],
+   "color": "arcane core, steel ring",
+   "lifetime": [
+    4,
+    10
+   ],
+   "count": "1 flare + 16 sparks + 1 ring",
+   "size": [
+    0.4,
+    0.8,
+    0.0
+   ],
+   "motion": "sparks cone 40 deg 0.5 b/t; ring expands to 1.5 b",
+   "opacity": "1.0 -> 0",
+   "emission": "palm_emitter",
+   "budget": 18,
+   "reduced": "Decreased: 6 sparks; Minimal: ring only"
+  },
+  {
+   "id": "beam",
+   "family": "tech",
+   "types": [
+    "energy_spark"
+   ],
+   "color": "arcane + arcane_core line",
+   "lifetime": [
+    2,
+    4
+   ],
+   "count": "beam is a textured quad strip (not particles); 2 sparks per tick at the impact point",
+   "size": [
+    0.05,
+    0.08,
+    0.0
+   ],
+   "motion": "impact sparks reflect off the surface normal 0.2 b/t",
+   "opacity": "1.0 -> 0",
+   "emission": "hit point",
+   "budget": 16,
+   "reduced": "Decreased: 1 spark per 2 ticks; Minimal: none (quad strip stays)"
+  },
+  {
+   "id": "landing_shockwave",
+   "family": "tech",
+   "types": [
+    "shock_ring",
+    "smoke_puff"
+   ],
+   "color": "steel ring, steel dust",
+   "lifetime": [
+    8,
+    16
+   ],
+   "count": "1 flat ring + 10 dust (scaled by impact 0..1)",
+   "size": [
+    0.5,
+    3.0,
+    3.0
+   ],
+   "motion": "ring expands in the ground plane; dust radial 0.15 b/t",
+   "opacity": "0.9 -> 0",
+   "emission": "feet position, ground plane",
+   "budget": 11,
+   "reduced": "Decreased: ring + 4 dust; Minimal: ring"
+  },
+  {
+   "id": "field_raise",
+   "family": "tech",
+   "types": [
+    "field_hex"
+   ],
+   "color": "arcane_dim hex cells",
+   "lifetime": [
+    10,
+    14
+   ],
+   "count": "24 hex cells, once",
+   "size": [
+    0.25,
+    0.3,
+    0.25
+   ],
+   "motion": "spawn on the shield surface, drift outward 0.02 b/t",
+   "opacity": "0 -> 0.8 -> 0",
+   "emission": "shield arc (directional 120 deg) or sphere",
+   "budget": 24,
+   "reduced": "Decreased: 10; Minimal: 4"
+  },
+  {
+   "id": "field_impact",
+   "family": "tech",
+   "types": [
+    "field_hex",
+    "energy_spark"
+   ],
+   "color": "steel_hi flash, arcane sparks",
+   "lifetime": [
+    6,
+    10
+   ],
+   "count": "6 hexes + 4 sparks at the hit bearing (x ripple 0..1)",
+   "size": [
+    0.3,
+    0.4,
+    0.3
+   ],
+   "motion": "hexes stay on the surface; sparks bounce outward 0.15 b/t",
+   "opacity": "1.0 -> 0",
+   "emission": "hit point on the field",
+   "budget": 10,
+   "reduced": "Decreased: 3 + 2; Minimal: 1 hex"
+  },
+  {
+   "id": "field_collapse",
+   "family": "tech",
+   "types": [
+    "field_hex",
+    "energy_spark"
+   ],
+   "color": "steel_hi shards",
+   "lifetime": [
+    10,
+    20
+   ],
+   "count": "30 hex shards + 12 sparks",
+   "size": [
+    0.3,
+    0.3,
+    0.1
+   ],
+   "motion": "outward 0.2 b/t with gravity 0.02",
+   "opacity": "1.0 -> 0",
+   "emission": "whole field surface",
+   "budget": 42,
+   "reduced": "Decreased: 12 + 4; Minimal: 6"
+  },
+  {
+   "id": "scan_sweep",
+   "family": "tech",
+   "types": [
+    "scan_line"
+   ],
+   "color": "arcane_dim",
+   "lifetime": [
+    10,
+    10
+   ],
+   "count": "1 line every 2 ticks along a 40 deg cone",
+   "size": [
+    0.4,
+    0.4,
+    0.4
+   ],
+   "motion": "advances 0.8 b/t to sensor range",
+   "opacity": "0.7 -> 0",
+   "emission": "palm_emitter, cone",
+   "budget": 20,
+   "reduced": "Decreased: every 4 ticks; Minimal: none (HUD result still shows)"
+  },
+  {
+   "id": "sparks",
+   "family": "tech",
+   "types": [
+    "ember",
+    "energy_spark"
+   ],
+   "color": "brass embers, arcane sparks",
+   "lifetime": [
+    6,
+    14
+   ],
+   "count": "4-8 per burst",
+   "size": [
+    0.05,
+    0.05,
+    0.02
+   ],
+   "motion": "random hemisphere 0.2 b/t, gravity 0.04",
+   "opacity": "1.0 -> 0",
+   "emission": "spark locators on damaged bots / armour",
+   "budget": 16,
+   "reduced": "Decreased: half; Minimal: 1"
+  },
+  {
+   "id": "repair_weld",
+   "family": "tech",
+   "types": [
+    "weld_spark",
+    "ember"
+   ],
+   "color": "arcane core, brass",
+   "lifetime": [
+    3,
+    8
+   ],
+   "count": "3 per 2 ticks while repairing",
+   "size": [
+    0.04,
+    0.05,
+    0.02
+   ],
+   "motion": "small arcs 0.1 b/t, gravity 0.05",
+   "opacity": "1.0 -> 0",
+   "emission": "hand locator",
+   "budget": 12,
+   "reduced": "Decreased: half; Minimal: none"
+  },
+  {
+   "id": "arcane_sigil",
+   "family": "sorcery",
+   "types": [
+    "sigil_glyph",
+    "arcane_mote"
+   ],
+   "color": "arcane glyphs, green-white motes",
+   "lifetime": [
+    16,
+    24
+   ],
+   "count": "3 glyphs drawn along the hand path + 8 motes",
+   "size": [
+    0.15,
+    0.3,
+    0.0
+   ],
+   "motion": "glyphs hang, then rotate slowly and fade; motes rise 0.02 b/t",
+   "opacity": "0 -> 1 -> 0 (slow)",
+   "emission": "palm path during the cast",
+   "budget": 11,
+   "reduced": "Decreased: 2 + 3; Minimal: 1 glyph"
+  },
+  {
+   "id": "ritual_motes",
+   "family": "sorcery",
+   "types": [
+    "arcane_mote",
+    "sigil_glyph"
+   ],
+   "color": "green_hi motes, arcane glyph ring",
+   "lifetime": [
+    30,
+    60
+   ],
+   "count": "4 per second rising from the circle; 8 glyphs orbiting",
+   "size": [
+    0.06,
+    0.12,
+    0.04
+   ],
+   "motion": "rise 0.03 b/t with a slow spiral; glyphs orbit r=2 at 0.02 rad/t",
+   "opacity": "0 -> 0.8 -> 0",
+   "emission": "ritual circle perimeter",
+   "budget": 40,
+   "reduced": "Decreased: 2/s + 4 glyphs; Minimal: glyph ring only"
+  },
+  {
+   "id": "teleport_flash",
+   "family": "sorcery",
+   "types": [
+    "arcane_mote",
+    "sigil_glyph"
+   ],
+   "color": "arcane_core flash, green motes",
+   "lifetime": [
+    8,
+    20
+   ],
+   "count": "20 motes implode at the origin, 20 explode at the destination",
+   "size": [
+    0.08,
+    0.12,
+    0.02
+   ],
+   "motion": "origin: inward 0.3 b/t; destination: outward 0.25 b/t",
+   "opacity": "1.0 -> 0",
+   "emission": "body volume at both ends",
+   "budget": 40,
+   "reduced": "Decreased: 8 + 8; Minimal: 3 + 3"
+  },
+  {
+   "id": "time_platform_charge",
+   "family": "tech",
+   "types": [
+    "energy_spark",
+    "shock_ring"
+   ],
+   "color": "arcane sparks, steel rings",
+   "lifetime": [
+    10,
+    20
+   ],
+   "count": "sparks 1 -> 10 per tick over the charge; a ring every second",
+   "size": [
+    0.05,
+    0.1,
+    0.0
+   ],
+   "motion": "sparks spiral up the platform; rings rise 0.05 b/t",
+   "opacity": "0.5 -> 1 -> 0",
+   "emission": "platform disc r=2",
+   "budget": 120,
+   "reduced": "Decreased: 1/3; Minimal: rings only"
+  }
+ ]
+}

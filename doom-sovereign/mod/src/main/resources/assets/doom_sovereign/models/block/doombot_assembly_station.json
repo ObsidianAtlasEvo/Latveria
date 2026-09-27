@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "doom_sovereign:block/doombot_assembly_station_front",
+    "side": "doom_sovereign:block/doombot_assembly_station_side",
+    "top": "doom_sovereign:block/doombot_assembly_station_top"
+  }
+}

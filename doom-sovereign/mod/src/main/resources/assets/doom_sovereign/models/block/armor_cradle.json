@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "doom_sovereign:block/armor_cradle_front",
+    "side": "doom_sovereign:block/armor_cradle_side",
+    "top": "doom_sovereign:block/armor_cradle_top"
+  }
+}

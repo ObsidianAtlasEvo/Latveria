@@ -20,6 +20,14 @@ from build_armor import ASSETS, PREVIEW
 ANIM_DIR = os.path.join(ASSETS, "geckolib", "animations", "armor")
 
 
+def known_particles():
+    p = os.path.join(ASSETS, "vfx", "effects.json")
+    if not os.path.exists(p):
+        return None
+    with open(p) as f:
+        return {"doom_sovereign:" + e["id"] for e in json.load(f)["effects"]}
+
+
 def known_sounds():
     p = os.path.join(ASSETS, "sounds.json")
     if not os.path.exists(p):
@@ -37,7 +45,7 @@ def armor():
     A.write_library(path, anim_armor.PREFIX, anims)
     with open(path) as f:
         doc = json.load(f)
-    problems = A.validate(doc, m, linked=RA.LINKED, known_sounds=known_sounds(), root_motion=ROOTS)
+    problems = A.validate(doc, m, linked=RA.LINKED, known_sounds=known_sounds(), known_particles=known_particles(), root_motion=ROOTS)
     keys = sum(len(k) for a in doc["animations"].values() for ch in a["bones"].values() for k in ch.values())
     print("royal armor animations: %d clips, %d keyframes, %d problems" % (len(doc["animations"]), keys, len(problems)))
     for p in problems[:40]:
@@ -72,7 +80,7 @@ def library(model, module, sub, fname, root_motion=()):
     A.write_library(path, module.PREFIX, anims)
     with open(path) as f:
         doc = json.load(f)
-    problems = A.validate(doc, model, known_sounds=known_sounds(), root_motion=root_motion)
+    problems = A.validate(doc, model, known_sounds=known_sounds(), known_particles=known_particles(), root_motion=root_motion)
     keys = sum(len(k) for a in doc["animations"].values() for ch in a["bones"].values() for k in ch.values())
     print("%s: %d clips, %d keyframes, %d problems" % (fname, len(doc["animations"]), keys, len(problems)))
     for p in problems[:40]:

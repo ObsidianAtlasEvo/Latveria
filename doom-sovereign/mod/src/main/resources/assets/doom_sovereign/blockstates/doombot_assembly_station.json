@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "doom_sovereign:block/doombot_assembly_station"
+    },
+    "facing=east": {
+      "model": "doom_sovereign:block/doombot_assembly_station",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "doom_sovereign:block/doombot_assembly_station",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "doom_sovereign:block/doombot_assembly_station",
+      "y": 270
+    }
+  }
+}

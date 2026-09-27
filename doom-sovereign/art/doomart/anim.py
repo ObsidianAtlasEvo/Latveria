@@ -45,7 +45,7 @@ _BASE_IN = {
     "Expo": lambda t: 0.0 if t == 0 else 2 ** (10 * t - 10),
     "Circ": lambda t: 1 - math.sqrt(max(0.0, 1 - t * t)),
     "Back": lambda t: 2.70158 * t ** 3 - 1.70158 * t * t,
-    "Elastic": lambda t: 0.0 if t in (0, 1) else -(2 ** (10 * t - 10)) * math.sin((t * 10 - 10.75) * (2 * math.pi) / 3),
+    "Elastic": lambda t: float(t) if t in (0, 1) else -(2 ** (10 * t - 10)) * math.sin((t * 10 - 10.75) * (2 * math.pi) / 3),
     "Bounce": lambda t: 1 - _bounce_out(1 - t),
 }
 EASINGS = {"linear": lambda t: t, "step": lambda t: 0.0 if t < 1 else 1.0}

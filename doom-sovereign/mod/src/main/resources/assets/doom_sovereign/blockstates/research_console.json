@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "doom_sovereign:block/research_console"
+    },
+    "facing=east": {
+      "model": "doom_sovereign:block/research_console",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "doom_sovereign:block/research_console",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "doom_sovereign:block/research_console",
+      "y": 270
+    }
+  }
+}
