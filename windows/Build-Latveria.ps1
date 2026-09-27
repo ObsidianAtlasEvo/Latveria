@@ -38,7 +38,7 @@
 #>
 [CmdletBinding()]
 param(
-    [string]$CommandFile = (Join-Path $PSScriptRoot 'latveria_commands.txt'),
+    [string]$CommandFile = '',
     [int]$DelayMs = 60,
     [int]$ChatOpenMs = 80,
     [double]$HeavyFactor = 1.0,
@@ -49,9 +49,14 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+# Windows PowerShell 5.1 leaves $PSScriptRoot empty inside param(), so work out the folder here
+$Here = $PSScriptRoot
+if (-not $Here) { $Here = Split-Path -Parent $MyInvocation.MyCommand.Definition }
+if (-not $Here) { $Here = (Get-Location).Path }
+if (-not $CommandFile) { $CommandFile = Join-Path $Here 'latveria_commands.txt' }
 $Inv = [Globalization.CultureInfo]::InvariantCulture
-$ProgressFile = Join-Path $PSScriptRoot 'latveria_progress.txt'
-$LogFile = Join-Path $PSScriptRoot 'latveria_log.txt'
+$ProgressFile = Join-Path $Here 'latveria_progress.txt'
+$LogFile = Join-Path $Here 'latveria_log.txt'
 
 # ---------------------------------------------------------------------------
 # Win32 keyboard input (SendInput) and window/hotkey helpers
@@ -180,7 +185,7 @@ function Resolve-Cmd([string]$text) {
 }
 
 if ($DryRun) {
-    $out = Join-Path $PSScriptRoot 'latveria_resolved.txt'
+    $out = Join-Path $Here 'latveria_resolved.txt'
     $sb = New-Object System.Text.StringBuilder
     foreach ($it in $items) {
         if ($it.Kind -eq 'cmd') { [void]$sb.AppendLine('/' + (Resolve-Cmd $it.Text)) }
