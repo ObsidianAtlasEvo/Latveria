@@ -1,0 +1,28 @@
+plugins { id 'java-library' }
+
+group = 'com.doomsovereign'
+version = '0.1.0-core'
+
+repositories { mavenCentral() }
+
+dependencies {
+    // Gson is bundled with Minecraft itself, so using it here adds no runtime dependency to the mod.
+    api 'com.google.code.gson:gson:2.11.0'
+    testImplementation platform('org.junit:junit-bom:5.11.4')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+java {
+    // Written in Java 21 syntax so it compiles here and, unchanged, under Minecraft 26.1.2's Java 25.
+    toolchain { languageVersion = JavaLanguageVersion.of(21) }
+    withSourcesJar()
+}
+
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8'; options.compilerArgs += ['-Xlint:all', '-Werror'] }
+
+test {
+    useJUnitPlatform()
+    testLogging { events 'failed'; exceptionFormat 'full' }
+    systemProperty 'doom.perf.report', "${rootDir}/docs/PERFORMANCE_CORE.md"
+}

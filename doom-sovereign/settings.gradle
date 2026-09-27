@@ -1,0 +1,6 @@
+// DOOM: SOVEREIGN
+// Only the toolchain-independent `core` module is built today. The Fabric mod module (`mod/`)
+// holds resources and integration notes; its build script is written once the Fabric 26.1.2
+// toolchain is reachable (see MINECRAFT_26_1_2_INTEGRATION_MANIFEST.md).
+rootProject.name = 'doom-sovereign'
+include 'core'

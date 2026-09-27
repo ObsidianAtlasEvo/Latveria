@@ -1,0 +1,625 @@
+[
+ {
+  "subject": "minecraft:blaze",
+  "name": "Blaze",
+  "traits": [
+   {
+    "id": "vitals",
+    "category": "VITALS",
+    "text": "20 hp, no armour. Hovers; rises when threatened.",
+    "threshold": 8
+   },
+   {
+    "id": "fire_immunity",
+    "category": "IMMUNITY",
+    "text": "Immune to fire and lava.",
+    "threshold": 20,
+    "via": "OBSERVED_ATTACK"
+   },
+   {
+    "id": "volley",
+    "category": "ATTACK",
+    "text": "Fires three fireballs after a 1 s wind-up; the rods glow first.",
+    "threshold": 35,
+    "via": "DAMAGE_TAKEN"
+   },
+   {
+    "id": "water_weakness",
+    "category": "WEAKNESS",
+    "text": "Water and snowballs hurt it.",
+    "threshold": 55,
+    "via": "SCAN"
+   },
+   {
+    "id": "rod_core",
+    "category": "BEHAVIOUR",
+    "text": "Its rods are a self-sustaining thermal lattice.",
+    "threshold": 80,
+    "via": "SAMPLE"
+   }
+  ],
+  "countermeasures": [
+   {
+    "id": "counter:thermal_plating",
+    "title": "Thermal Plating",
+    "description": "Armour upgrade: fire and fireball damage greatly reduced; gauntlets shed heat faster.",
+    "knowledge": 80,
+    "traits": [
+     "fire_immunity",
+     "rod_core"
+    ]
+   },
+   {
+    "id": "counter:coolant_bolts",
+    "title": "Coolant Bolts",
+    "description": "Gauntlet mode that deals bonus damage to heat-based creatures.",
+    "knowledge": 60,
+    "traits": [
+     "water_weakness"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "minecraft:guardian",
+  "name": "Guardian",
+  "traits": [
+   {
+    "id": "vitals",
+    "category": "VITALS",
+    "text": "30 hp, spiked shell.",
+    "threshold": 8
+   },
+   {
+    "id": "beam",
+    "category": "ATTACK",
+    "text": "Charges a beam for 2 s; breaking line of sight cancels it.",
+    "threshold": 30,
+    "via": "DAMAGE_TAKEN"
+   },
+   {
+    "id": "thorns",
+    "category": "ATTACK",
+    "text": "Spikes return melee damage while extended.",
+    "threshold": 45,
+    "via": "OBSERVED_ATTACK"
+   },
+   {
+    "id": "hydrodynamics",
+    "category": "BEHAVIOUR",
+    "text": "Moves by water-jet; flow patterns recorded.",
+    "threshold": 75,
+    "via": "SCAN"
+   }
+  ],
+  "countermeasures": [
+   {
+    "id": "counter:sonar_targeting",
+    "title": "Sonar Targeting",
+    "description": "Improved underwater targeting and scan range.",
+    "knowledge": 75,
+    "traits": [
+     "hydrodynamics"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "minecraft:enderman",
+  "name": "Enderman",
+  "traits": [
+   {
+    "id": "vitals",
+    "category": "VITALS",
+    "text": "40 hp. Teleports when struck by projectiles.",
+    "threshold": 8
+   },
+   {
+    "id": "projectile_evasion",
+    "category": "BEHAVIOUR",
+    "text": "Teleports away from arrows and energy bolts.",
+    "threshold": 25,
+    "via": "OBSERVED_ATTACK"
+   },
+   {
+    "id": "water_weakness",
+    "category": "WEAKNESS",
+    "text": "Water burns it.",
+    "threshold": 45,
+    "via": "SCAN"
+   },
+   {
+    "id": "gaze",
+    "category": "BEHAVIOUR",
+    "text": "Provoked by eye contact; the mask can be tuned to avoid it.",
+    "threshold": 60,
+    "via": "OBSERVED_ATTACK"
+   },
+   {
+    "id": "translocation_signature",
+    "category": "BEHAVIOUR",
+    "text": "Its teleports leave a readable spatial wake.",
+    "threshold": 85,
+    "via": "SAMPLE"
+   }
+  ],
+  "countermeasures": [
+   {
+    "id": "counter:gaze_filter",
+    "title": "Gaze Filter",
+    "description": "Mask optics that let you look at endermen without provoking them.",
+    "knowledge": 60,
+    "traits": [
+     "gaze"
+    ]
+   },
+   {
+    "id": "counter:spatial_lock",
+    "title": "Spatial Lock",
+    "description": "Beam hits briefly prevent teleportation.",
+    "knowledge": 85,
+    "traits": [
+     "translocation_signature"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "minecraft:witch",
+  "name": "Witch",
+  "traits": [
+   {
+    "id": "vitals",
+    "category": "VITALS",
+    "text": "26 hp. Drinks potions to heal and resist.",
+    "threshold": 8
+   },
+   {
+    "id": "potion_arsenal",
+    "category": "ATTACK",
+    "text": "Throws slowness, poison, weakness and harming.",
+    "threshold": 30,
+    "via": "DAMAGE_TAKEN"
+   },
+   {
+    "id": "magic_resistance",
+    "category": "RESISTANCE",
+    "text": "Takes 85 % less damage from magic.",
+    "threshold": 50,
+    "via": "OBSERVED_ATTACK"
+   },
+   {
+    "id": "brew_pattern",
+    "category": "BEHAVIOUR",
+    "text": "Predictable drinking pattern when hurt.",
+    "threshold": 70,
+    "via": "SCAN"
+   }
+  ],
+  "countermeasures": [
+   {
+    "id": "counter:purge_ward",
+    "title": "Purging Ward",
+    "description": "Ward that cleanses thrown debuffs on contact.",
+    "knowledge": 70,
+    "traits": [
+     "potion_arsenal",
+     "brew_pattern"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "minecraft:evoker",
+  "name": "Evoker",
+  "traits": [
+   {
+    "id": "vitals",
+    "category": "VITALS",
+    "text": "24 hp. Summoner.",
+    "threshold": 8
+   },
+   {
+    "id": "fangs",
+    "category": "ATTACK",
+    "text": "Conjures fangs in lines or rings; the ground glows first.",
+    "threshold": 25,
+    "via": "DAMAGE_TAKEN"
+   },
+   {
+    "id": "vex_summon",
+    "category": "ATTACK",
+    "text": "Summons vexes that pass through walls.",
+    "threshold": 40,
+    "via": "OBSERVED_ATTACK"
+   },
+   {
+    "id": "sigil_structure",
+    "category": "BEHAVIOUR",
+    "text": "Its spells share a sigil structure Doom can counter-write.",
+    "threshold": 75,
+    "via": "DEFEATED"
+   }
+  ],
+  "countermeasures": [
+   {
+    "id": "counter:counter_rune_illager",
+    "title": "Counter-Rune: Illager Sigils",
+    "description": "Ward that disrupts fang and vex summons nearby.",
+    "knowledge": 75,
+    "traits": [
+     "sigil_structure"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "minecraft:vex",
+  "name": "Vex",
+  "traits": [
+   {
+    "id": "vitals",
+    "category": "VITALS",
+    "text": "14 hp; dies on its own after a while.",
+    "threshold": 8
+   },
+   {
+    "id": "phasing",
+    "category": "BEHAVIOUR",
+    "text": "Passes through solid blocks.",
+    "threshold": 30,
+    "via": "OBSERVED_ATTACK"
+   },
+   {
+    "id": "binding_weakness",
+    "category": "WEAKNESS",
+    "text": "Its bound spirit is vulnerable to binding chains.",
+    "threshold": 65,
+    "via": "DEFEATED"
+   }
+  ],
+  "countermeasures": []
+ },
+ {
+  "subject": "minecraft:shulker",
+  "name": "Shulker",
+  "traits": [
+   {
+    "id": "vitals",
+    "category": "VITALS",
+    "text": "30 hp; 20 armour while shelled.",
+    "threshold": 8
+   },
+   {
+    "id": "levitation",
+    "category": "ATTACK",
+    "text": "Bullets inflict levitation.",
+    "threshold": 30,
+    "via": "DAMAGE_TAKEN"
+   },
+   {
+    "id": "shell_gap",
+    "category": "WEAKNESS",
+    "text": "Vulnerable only while open.",
+    "threshold": 50,
+    "via": "OBSERVED_ATTACK"
+   },
+   {
+    "id": "field_shell",
+    "category": "BEHAVIOUR",
+    "text": "Its shell projects a closed spatial field.",
+    "threshold": 80,
+    "via": "SAMPLE"
+   }
+  ],
+  "countermeasures": [
+   {
+    "id": "counter:gravitic_stabiliser",
+    "title": "Gravitic Stabiliser",
+    "description": "Thrusters automatically counter levitation.",
+    "knowledge": 60,
+    "traits": [
+     "levitation"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "minecraft:iron_golem",
+  "name": "Iron Golem",
+  "traits": [
+   {
+    "id": "vitals",
+    "category": "VITALS",
+    "text": "100 hp. Village guardian.",
+    "threshold": 8
+   },
+   {
+    "id": "uppercut",
+    "category": "ATTACK",
+    "text": "Launches targets upward with heavy knockback.",
+    "threshold": 30,
+    "via": "DAMAGE_TAKEN"
+   },
+   {
+    "id": "servo_structure",
+    "category": "BEHAVIOUR",
+    "text": "Animated by a primitive self-repairing core.",
+    "threshold": 70,
+    "via": "SCAN"
+   }
+  ],
+  "countermeasures": []
+ },
+ {
+  "subject": "minecraft:creeper",
+  "name": "Creeper",
+  "traits": [
+   {
+    "id": "vitals",
+    "category": "VITALS",
+    "text": "20 hp.",
+    "threshold": 8
+   },
+   {
+    "id": "fuse",
+    "category": "ATTACK",
+    "text": "1.5 s fuse; walking away out of range stops it.",
+    "threshold": 25,
+    "via": "OBSERVED_ATTACK"
+   },
+   {
+    "id": "charged",
+    "category": "WEAKNESS",
+    "text": "Lightning charges it: far more dangerous.",
+    "threshold": 60,
+    "via": "SCAN"
+   }
+  ],
+  "countermeasures": [
+   {
+    "id": "counter:blast_dampers",
+    "title": "Blast Dampers",
+    "description": "Force field absorbs explosions at full efficiency.",
+    "knowledge": 60,
+    "traits": [
+     "fuse"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "minecraft:skeleton",
+  "name": "Skeleton",
+  "traits": [
+   {
+    "id": "vitals",
+    "category": "VITALS",
+    "text": "20 hp. Undead.",
+    "threshold": 8
+   },
+   {
+    "id": "archery",
+    "category": "ATTACK",
+    "text": "Strafes and fires every 1-2 s.",
+    "threshold": 25,
+    "via": "DAMAGE_TAKEN"
+   },
+   {
+    "id": "undead",
+    "category": "WEAKNESS",
+    "text": "Undead: smite and healing magic harm it.",
+    "threshold": 45,
+    "via": "SCAN"
+   }
+  ],
+  "countermeasures": []
+ },
+ {
+  "subject": "minecraft:wither_skeleton",
+  "name": "Wither Skeleton",
+  "traits": [
+   {
+    "id": "vitals",
+    "category": "VITALS",
+    "text": "20 hp. Tall; inflicts wither.",
+    "threshold": 8
+   },
+   {
+    "id": "wither_touch",
+    "category": "ATTACK",
+    "text": "Strikes inflict wither.",
+    "threshold": 25,
+    "via": "DAMAGE_TAKEN"
+   },
+   {
+    "id": "soul_bond",
+    "category": "BEHAVIOUR",
+    "text": "Bound to soul fire; banishment unmakes it.",
+    "threshold": 70,
+    "via": "DEFEATED"
+   }
+  ],
+  "countermeasures": [
+   {
+    "id": "counter:wither_ward",
+    "title": "Wither Ward",
+    "description": "Ward that blocks wither.",
+    "knowledge": 70,
+    "traits": [
+     "wither_touch",
+     "soul_bond"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "minecraft:ghast",
+  "name": "Ghast",
+  "traits": [
+   {
+    "id": "vitals",
+    "category": "VITALS",
+    "text": "10 hp. Long-range bombardment.",
+    "threshold": 8
+   },
+   {
+    "id": "fireball",
+    "category": "ATTACK",
+    "text": "Fireballs can be deflected back with a gauntlet strike.",
+    "threshold": 30,
+    "via": "OBSERVED_ATTACK"
+   },
+   {
+    "id": "tear",
+    "category": "BEHAVIOUR",
+    "text": "Its tears are a regenerative catalyst.",
+    "threshold": 70,
+    "via": "SAMPLE"
+   }
+  ],
+  "countermeasures": []
+ },
+ {
+  "subject": "minecraft:phantom",
+  "name": "Phantom",
+  "traits": [
+   {
+    "id": "vitals",
+    "category": "VITALS",
+    "text": "20 hp. Swoops at the sleepless.",
+    "threshold": 8
+   },
+   {
+    "id": "swoop",
+    "category": "ATTACK",
+    "text": "Circles, then dives in a straight line.",
+    "threshold": 30,
+    "via": "DAMAGE_TAKEN"
+   },
+   {
+    "id": "membrane",
+    "category": "BEHAVIOUR",
+    "text": "Membrane generates lift from nothing.",
+    "threshold": 65,
+    "via": "SAMPLE"
+   }
+  ],
+  "countermeasures": []
+ },
+ {
+  "subject": "minecraft:warden",
+  "name": "Warden",
+  "traits": [
+   {
+    "id": "vitals",
+    "category": "VITALS",
+    "text": "500 hp. Blind; hunts by vibration.",
+    "threshold": 10
+   },
+   {
+    "id": "sonic_boom",
+    "category": "ATTACK",
+    "text": "Sonic boom ignores shields and armour.",
+    "threshold": 30,
+    "via": "DAMAGE_TAKEN"
+   },
+   {
+    "id": "vibration",
+    "category": "BEHAVIOUR",
+    "text": "Tracks vibrations and smell; stillness and wool hide you.",
+    "threshold": 50,
+    "via": "OBSERVED_ATTACK"
+   },
+   {
+    "id": "sculk_bond",
+    "category": "BEHAVIOUR",
+    "text": "Bound to the sculk network that summoned it.",
+    "threshold": 85,
+    "via": "SCAN"
+   }
+  ],
+  "countermeasures": [
+   {
+    "id": "counter:vibration_damping",
+    "title": "Vibration Damping",
+    "description": "Servos go silent while sneaking: sculk sensors ignore you.",
+    "knowledge": 60,
+    "traits": [
+     "vibration"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "minecraft:piglin_brute",
+  "name": "Piglin Brute",
+  "traits": [
+   {
+    "id": "vitals",
+    "category": "VITALS",
+    "text": "50 hp. Heavy axe.",
+    "threshold": 8
+   },
+   {
+    "id": "axe",
+    "category": "ATTACK",
+    "text": "Heavy axe blows; no ranged attack.",
+    "threshold": 30,
+    "via": "DAMAGE_TAKEN"
+   },
+   {
+    "id": "gold_blindness",
+    "category": "BEHAVIOUR",
+    "text": "Unmoved by gold, unlike other piglins.",
+    "threshold": 60,
+    "via": "OBSERVED_ATTACK"
+   }
+  ],
+  "countermeasures": []
+ },
+ {
+  "subject": "minecraft:breeze",
+  "name": "Breeze",
+  "traits": [
+   {
+    "id": "vitals",
+    "category": "VITALS",
+    "text": "30 hp. Deflects projectiles.",
+    "threshold": 8
+   },
+   {
+    "id": "wind_charge",
+    "category": "ATTACK",
+    "text": "Wind charges knock you back hard.",
+    "threshold": 25,
+    "via": "DAMAGE_TAKEN"
+   },
+   {
+    "id": "deflection",
+    "category": "RESISTANCE",
+    "text": "Reflects arrows and energy bolts; melee works.",
+    "threshold": 45,
+    "via": "OBSERVED_ATTACK"
+   },
+   {
+    "id": "vortex_core",
+    "category": "BEHAVIOUR",
+    "text": "Its rod holds a stable vortex.",
+    "threshold": 75,
+    "via": "SAMPLE"
+   }
+  ],
+  "countermeasures": [
+   {
+    "id": "counter:anchor_boots",
+    "title": "Anchor Boots",
+    "description": "Knockback from wind and blasts halved.",
+    "knowledge": 60,
+    "traits": [
+     "wind_charge"
+    ]
+   }
+  ]
+ }
+]
