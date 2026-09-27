@@ -1,5 +1,10 @@
 # Latveria — Castle Doom & Doomstadt for Minecraft Java 26.1.2
 
+> **Also in this repository: [`doom-sovereign/`](doom-sovereign/README.md)** — work toward a Doctor Doom
+> Fabric mod for 26.1.2 (tested pure-Java core, generated armour/Doombot art, animations, original audio,
+> HUD). It has not been compiled against Fabric or run in Minecraft yet; see
+> `doom-sovereign/docs/STATUS_REPORT.md`. The command-file builds below are unaffected by it.
+
 A complete, survival-functional Latverian capital: **Castle Doom** on its crag and the walled
 town of **Doomstadt** beneath it. It covers about 300 × 365 blocks, and the Doom Tower's
 beacon stands about 100 blocks above the plaza. The whole thing is built by a Windows script

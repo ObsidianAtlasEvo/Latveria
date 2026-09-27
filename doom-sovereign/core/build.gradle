@@ -25,4 +25,7 @@ test {
     useJUnitPlatform()
     testLogging { events 'failed'; exceptionFormat 'full' }
     systemProperty 'doom.perf.report', "${rootDir}/docs/PERFORMANCE_CORE.md"
+    // generated asset tree (art/build_*.py); the presentation tests check every id against it
+    systemProperty 'doom.assets', "${rootDir}/mod/src/main/resources/assets/doom_sovereign"
+    inputs.dir("${rootDir}/mod/src/main/resources/assets/doom_sovereign").withPropertyName('assets').optional()
 }

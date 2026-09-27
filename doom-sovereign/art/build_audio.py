@@ -404,6 +404,23 @@ def spectrogram(x, h=96, w=240):
     return img
 
 
+def write_if_changed(path, x):
+    """Vorbis streams carry a random serial number, so re-encoding identical audio changes the bytes.
+    Keep the existing file when it decodes to the same samples, so rebuilds are byte-stable."""
+    import io
+    buf = io.BytesIO()
+    sf.write(buf, x, SR, format="OGG", subtype="VORBIS")
+    if os.path.exists(path):
+        buf.seek(0)
+        new, _ = sf.read(buf)
+        old, _ = sf.read(path)
+        if old.shape == new.shape and np.max(np.abs(old - new)) < 1e-6:
+            return False
+    with open(path, "wb") as f:
+        f.write(buf.getvalue())
+    return True
+
+
 def build():
     from PIL import Image, ImageDraw
     os.makedirs(SOUND_DIR, exist_ok=True)
@@ -414,7 +431,7 @@ def build():
         x = S.normalize(x, -2.0, TARGET_RMS[kind])   # 2 dB headroom: Vorbis overshoots peaks by up to ~0.8 dB
         path = os.path.join(SOUND_DIR, stem + ".ogg")
         os.makedirs(os.path.dirname(path), exist_ok=True)
-        sf.write(path, x.astype(np.float32), SR, format="OGG", subtype="VORBIS")
+        write_if_changed(path, x.astype(np.float32))
         y, sr = sf.read(path)
         st = S.stats(y)
         st.update({"event": "doom_sovereign:" + event, "file": "sounds/" + stem + ".ogg", "family": family, "kind": kind,

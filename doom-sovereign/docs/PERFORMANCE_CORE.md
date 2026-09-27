@@ -12,16 +12,16 @@ algorithmic cost of the graph code only; in-game cost also includes block-entity
 
 | Operation | Time |
 |---|---|
-| register 100,489 nodes | 113.80 ms |
-| connect as a 317x317 grid (200,288 links, merge smaller-into-larger) | 167.05 ms |
-| flow tick, one 100k-node network (median of 20) | 4.10 ms |
-| flow tick, worst of 20 | 52.64 ms |
-| cut 317 links (marks dirty only) | 0.56 ms |
-| lazy split: flood fill of 100k members | 77.45 ms |
-| rejoin halves with one link | 17.24 ms |
-| add + remove 10,000 leaf nodes | 10.43 ms |
-| build 20,000 separate 5-node networks | 259.83 ms |
-| flow tick, 20,000 networks / 100,000 nodes | 220.85 ms |
+| register 100,489 nodes | 97.68 ms |
+| connect as a 317x317 grid (200,288 links, merge smaller-into-larger) | 145.08 ms |
+| flow tick, one 100k-node network (median of 20) | 4.68 ms |
+| flow tick, worst of 20 | 42.63 ms |
+| cut 317 links (marks dirty only) | 0.51 ms |
+| lazy split: flood fill of 100k members | 125.55 ms |
+| rejoin halves with one link | 15.64 ms |
+| add + remove 10,000 leaf nodes | 54.24 ms |
+| build 20,000 separate 5-node networks | 387.41 ms |
+| flow tick, 20,000 networks / 100,000 nodes | 172.11 ms |
 
 First-run numbers include JIT warm-up. A real server ticks each network once per game tick (50 ms budget);
 Doom networks in normal play are a few hundred nodes, three orders of magnitude below this test.

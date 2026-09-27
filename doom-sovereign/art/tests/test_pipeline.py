@@ -90,6 +90,18 @@ class TextureTests(unittest.TestCase):
                         bad.append(f)
         self.assertEqual([], bad)
 
+    def test_textures_have_the_size_their_users_expect(self):
+        """Guards against two generators writing the same path (the hero mask once overwrote the icon)."""
+        from PIL import Image
+        tex = os.path.join(ASSETS, "textures")
+        self.assertEqual((16, 16), Image.open(os.path.join(tex, "item", "doom_mask.png")).size)
+        self.assertEqual((64, 64), Image.open(os.path.join(tex, "item", "doom_mask_hero.png")).size)
+        self.assertEqual((128, 128), Image.open(os.path.join(tex, "armor", "royal_armor.png")).size)
+        self.assertEqual((64, 64), Image.open(os.path.join(tex, "entity", "doombot", "doombot_standard.png")).size)
+        for f in os.listdir(os.path.join(tex, "item")):
+            size = Image.open(os.path.join(tex, "item", f)).size
+            self.assertEqual((64, 64) if f.startswith("doom_mask_hero") else (16, 16), size, f)
+
     def test_palette_checker_catches_foreign_colours(self):
         a = np.zeros((2, 2, 4), np.uint8)
         a[0, 0] = (255, 0, 0, 255)
@@ -144,6 +156,11 @@ class AnimationValidatorTests(unittest.TestCase):
             a["bones"]["right_shin"]["rotation"]["0.3"] = {"vector": [-40, 0, 0]}   # knee bending backwards
         probs = self.mutated(bend)
         self.assertTrue(any("right_shin" in p and "outside" in p for p in probs), probs)
+
+    def test_undeclared_axes_are_fixed(self):
+        def twist_belt(a):
+            a["bones"]["belt"] = {"rotation": {"0.0": {"vector": [0, 0, 0]}, "0.6": {"vector": [0, 20, 0]}, "1.2": {"vector": [0, 0, 0]}}}
+        self.assertTrue(any("belt" in p and "outside" in p for p in self.mutated(twist_belt)))
 
     def test_broken_loop_seam(self):
         def seam(a):

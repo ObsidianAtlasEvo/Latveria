@@ -21,7 +21,7 @@ def build():
     m = DM.build()
     fill = prepare(m)
     m.write(os.path.join(GEO_DIR, "doom_mask.geo.json"))
-    tex, files = paint_states(m, DM.DECORATIONS, TEX_DIR, "doom_mask",
+    tex, files = paint_states(m, DM.DECORATIONS, TEX_DIR, "doom_mask_hero",
                               [("", 0), ("_damaged_moderate", 1), ("_damaged_severe", 2)], ["low", "powered", "arcane"])
     cells, labels = [], []
     for suffix, label in (("", "pristine"), ("_damaged_moderate", "moderate damage"), ("_damaged_severe", "severe damage")):

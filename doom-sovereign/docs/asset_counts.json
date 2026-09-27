@@ -1,0 +1,25 @@
+{
+ "by_type": {
+  "texture: other (icon)": 1,
+  "sounds.json": 1,
+  "particle definition": 10,
+  "blockstate": 5,
+  "vfx spec (json)": 1,
+  "item definition": 20,
+  "sound (ogg)": 32,
+  "model json": 20,
+  "geometry (geo.json)": 3,
+  "animation library (json)": 3,
+  "language": 1,
+  "equipment asset": 1,
+  "texture: HUD sprite": 55,
+  "sprite metadata": 1,
+  "texture: block": 14,
+  "texture: item": 27,
+  "texture: entity": 11,
+  "texture: particle": 31,
+  "texture: armor": 12
+ },
+ "total": 249,
+ "previews": 20
+}

@@ -1,0 +1,23 @@
+{
+  "_comment": "UNVERIFIED SCAFFOLDING. Not a working fabric.mod.json: the ${...} values could not be resolved (maven.fabricmc.net and meta.fabricmc.net were unreachable) and no entrypoint class exists yet. Rename to src/main/resources/fabric.mod.json at integration step 5 of docs/MINECRAFT_26_1_2_INTEGRATION_MANIFEST.md, after filling every placeholder from the real Fabric metadata.",
+  "schemaVersion": 1,
+  "id": "doom_sovereign",
+  "version": "${version}",
+  "name": "DOOM: SOVEREIGN",
+  "description": "Become the monarch of Latveria: the Royal Armor, Doombots, Doom Analysis, sorcery and science.",
+  "authors": ["ObsidianAtlasEvo"],
+  "license": "All-Rights-Reserved",
+  "icon": "assets/doom_sovereign/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["${main_entrypoint_class}"],
+    "client": ["${client_entrypoint_class}"]
+  },
+  "depends": {
+    "fabricloader": ">=${fabric_loader_version}",
+    "minecraft": "~26.1.2",
+    "java": ">=25",
+    "fabric-api": "*",
+    "geckolib": ">=${geckolib_version}"
+  }
+}

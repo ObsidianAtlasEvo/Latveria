@@ -252,7 +252,7 @@ def validate(doc, model, linked=None, known_sounds=None, known_particles=None, r
                 v = probe.sample(bone, ch, t)
                 if ch == "rotation":
                     for k, ax in enumerate("xyz"):
-                        lo, hi = b.dof.get(ax, (-180, 180))
+                        lo, hi = b.dof.get(ax, (0.0, 0.0))     # an axis without a declared range is fixed
                         total = b.rotation[k] + v[k]
                         if not (lo - 0.51 <= total <= hi + 0.51):
                             problems.append("%s/%s: rotation %s = %.1f outside %s..%s at t=%.2f" % (where, bone, ax, total, lo, hi, t))
