@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+windows/latveria_progress.txt
+windows/latveria_log.txt
+windows/latveria_resolved.txt
