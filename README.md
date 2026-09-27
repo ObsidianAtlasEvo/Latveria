@@ -95,6 +95,44 @@ reports **0 problems across 2.72 million blocks and 293 entities**.
 
 ---
 
+## Lighting Overhaul (third command file)
+
+Run **`windows/Build-Latveria-Lighting.bat`** after the main build and the expansion. It is
+preset to your centre (799 70 −10090), has about 4,900 commands and takes about 20 minutes.
+It changes only light. Every change is written as `fill … replace <the block that was
+built there>`, so any block you've edited by hand is left alone, and your rebuilt Doombot
+factory is skipped entirely.
+
+**Designed features**
+* A glowing runner hidden under the throne room's green carpet, Doom-green light bands around
+  every pillar, and lit dais edges.
+* Glass-over-froglight strips down the dungeon corridor (the same technique as your factory),
+  and a ring of light in the Time Platform.
+* Flush lights along every castle wall walk, the processional way, the Grand Stair and the keep
+  roof, plus green uplights set into the base of every curtain wall.
+* A glowing ring and rays on the Plaza of Doom, a lit rim around the Colossus plinth, runway
+  lights down the avenues and lanes, and lights along the town wall walk.
+
+**Room-by-room light pass.** Every room of the castle, the town, the sewers and cistern, and
+the new districts is modelled for light level. Wherever you would stand in light below 11, it
+adds, in order of preference:
+* a flush **ceiling coffer**, matched to the ceiling material: shroomlight in wood, ochre froglight
+  in deepslate, sea lanterns in stone, and verdant froglight in the dungeons, laboratory and sewers
+* a **wall sconce** recessed into a thick wall at eye level
+* a **floor inlay**: glass over a froglight where the floor is two blocks deep, otherwise a flush
+  light tile
+* a lantern, only where nothing else fits
+
+| Standing spots | Average light before → after | Dimmer than 11: before → after |
+|---|---|---|
+| Castle interiors | 8.9 → 12.2 | 66% → 5.6% |
+| Town interiors | 9.9 → 12.1 | 58% → 1.7% |
+
+![Throne room light](docs/light_keep_ground.png)
+![Dungeon light](docs/light_keep_dungeon.png)
+
+---
+
 ## What gets built
 
 ### Castle Doom (north, on a 12-block crag)
@@ -207,6 +245,9 @@ generator/          Python generator (no dependencies) + optional preview/verify
   build_expansion.py -> writes windows/latveria_expansion_commands.txt (needs numpy)
   expansion.py      the Survival Expansion v2 districts, farms and lighting audit
   sim.py            voxel model of the finished world + block-light audit
+  build_lighting.py -> writes windows/latveria_lighting_commands.txt (needs numpy)
+  lighting.py       the lighting overhaul (designed features + light-level pass)
+  lightmap.py       renders docs/light_*.png before/after light maps
   core.py           command engine: validation, chat-length splitting, coordinate tokens
   terrain.py        clearing, crag, moat, Grand Stair
   castle.py         walls, towers, gatehouse, courtyard buildings
