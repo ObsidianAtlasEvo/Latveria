@@ -116,8 +116,82 @@ def weight(cmd, cost):
     return 0
 
 
+UNKNOWN_SECTIONS = ("setup", "clear", "ground")   # the world before these is unknown
+
+
+def prune_noops(b):
+    """Replay the build in a voxel model and drop fill/setblock commands that would
+    change nothing (they only produce "No blocks were filled" / "Could not set the
+    block" errors in chat).  The site is fully known once it has been cleared and
+    levelled, so only later sections are pruned.  Columns near generated trees
+    (whose exact shape is unknown) are never pruned."""
+    try:
+        import numpy as np
+    except ImportError:
+        print("numpy not installed - skipping no-op pruning")
+        return 0
+    import re
+    TOK = re.compile(r"\$([xyz])\((-?[0-9.]+)\)")
+    X0, Y0, Z0 = X_MIN - 2, -14, Z_MIN - 2
+    W = np.zeros((X_MAX - X0 + 3, 160, Z_MAX - Z0 + 3), dtype=np.int32)
+    states, sid = ["air"], {"air": 0}
+    trees = np.zeros((W.shape[0], W.shape[2]), dtype=bool)
+
+    def st(spec):
+        spec = spec.replace("minecraft:", "")
+        if spec not in sid:
+            sid[spec] = len(states)
+            states.append(spec)
+        return sid[spec]
+
+    removed = 0
+    for sec in b.sections:
+        keep_all = sec["name"] in UNKNOWN_SECTIONS
+        out = []
+        for text, cost in sec["cmds"]:
+            op = text.split(" ", 1)[0]
+            if op == "place":
+                v = [int(float(t) // 1) for _, t in TOK.findall(text)]
+                x, z = v[0] - X0, v[2] - Z0
+                trees[max(0, x - 5):x + 6, max(0, z - 5):z + 6] = True
+            if op not in ("fill", "setblock"):
+                out.append((text, cost))
+                continue
+            v = [int(float(t) // 1) for _, t in TOK.findall(text)]
+            rest = TOK.sub("", text).split()
+            if op == "fill":
+                x1, y1, z1, x2, y2, z2 = v
+            else:
+                x1, y1, z1 = v
+                x2, y2, z2 = v
+            blk = rest[1]
+            flt = rest[3] if len(rest) > 3 and rest[2] == "replace" else None
+            a = (slice(x1 - X0, x2 - X0 + 1), slice(y1 - Y0, y2 - Y0 + 1), slice(z1 - Z0, z2 - Z0 + 1))
+            sub = W[a]
+            has_nbt = "{" in blk
+            new = st(blk.split("{", 1)[0])
+            if flt:
+                fname = flt.split("[", 1)[0]
+                ids = [i for i, s_ in enumerate(states) if s_.split("[", 1)[0] == fname]
+                mask = np.isin(sub, ids)
+                noop = not mask.any()
+                sub[mask] = new
+            else:
+                noop = (not has_nbt) and bool((sub == new).all())
+                sub[...] = new
+            near_tree = trees[a[0], a[2]].any()
+            if noop and not keep_all and not near_tree:
+                removed += 1
+                continue
+            out.append((text, cost))
+        sec["cmds"] = out
+    return removed
+
+
 def main():
     b = build()
+    removed = prune_noops(b)
+    print("pruned %d commands that would change nothing" % removed)
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     lines = []
     n = 0

@@ -40,7 +40,7 @@ in front of the Colossus of Doom.
 | **F10** | stop (progress is saved; run the `.bat` again to resume) |
 | click away from Minecraft | pauses automatically, so it can never type into another program |
 
-**Duration:** about 24,600 commands take roughly **80–90 minutes** at the default speed.
+**Duration:** about 23,400 commands take roughly **75–85 minutes** at the default speed.
 
 ### Tuning
 
@@ -189,7 +189,7 @@ generator/          Python generator (no dependencies) + optional preview/verify
   mcdata/           Minecraft 26.1.2 block states and registries (from the game's data)
 windows/
   Build-Latveria.bat / .ps1   the chat sender
-  latveria_commands.txt       the generated build (24,595 commands)
+  latveria_commands.txt       the generated build (23,415 commands)
 ```
 
 * **Chat-safe:** Minecraft's chat box takes 256 characters. The generator splits anything
