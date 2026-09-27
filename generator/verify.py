@@ -18,8 +18,9 @@ from collections import Counter
 import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-CMDS = os.path.join(HERE, "..", "windows", "latveria_commands.txt")
-X0, X1, Y0, Y1, Z0, Z1 = -155, 155, -14, 140, -256, 116
+CMDS = [os.path.join(HERE, "..", "windows", f) for f in
+        (sys.argv[1:] or ["latveria_commands.txt"])]
+X0, X1, Y0, Y1, Z0, Z1 = -310, 310, -140, 140, -260, 250
 TOK = re.compile(r"\$([xyz])\((-?[0-9.]+)\)")
 OPP = {"north": (0, 0, 1), "south": (0, 0, -1), "east": (-1, 0, 0), "west": (1, 0, 0)}
 
@@ -51,7 +52,8 @@ NONSUPPORT = ("air", "water", "lava", "fire", "light")
 def main():
     W = np.zeros((X1 - X0 + 1, Y1 - Y0 + 1, Z1 - Z0 + 1), dtype=np.int32)
     summons = []
-    for line in open(CMDS, encoding="utf-8"):
+    import itertools
+    for line in itertools.chain(*[open(p, encoding="utf-8") for p in CMDS]):
         if line.startswith(("#", "!")):
             continue
         cmd = line.rstrip("\r\n").split("\t", 1)[1]
@@ -140,6 +142,9 @@ def main():
                                                      "cornflower", "blue_orchid", "azure_bluet", "oxeye_daisy"):
             if not solid(at(x, y - 1, z)):
                 bad("floor item floating", x, y, z, s)
+        elif n.endswith("_sign") and "wall" not in n and "hanging" not in n:
+            if not solid(at(x, y - 1, z)):
+                bad("standing sign floating", x, y, z, s)
         elif n == "lily_pad":
             if name(at(x, y - 1, z)) != "water":
                 bad("lily pad not on water", x, y, z, s)
@@ -152,7 +157,7 @@ def main():
             continue
         here = at(bx, by, bz)
         n = name(here)
-        passable = n in NONSUPPORT or n.endswith(("_carpet", "_slab", "_pressure_plate", "_button", "_sapling",
+        passable = n in NONSUPPORT or n in ("rail", "powered_rail") or n.endswith(("_carpet", "_slab", "_pressure_plate", "_button", "_sapling",
                                                   "ladder", "torch", "flower", "grass", "_trapdoor"))
         if not passable and not (et == "armor_stand" and n.endswith("_slab")):
             bad("entity inside block", bx, by, bz, "%s in %s" % (et, here))

@@ -15,12 +15,13 @@ import numpy as np
 from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-CMDS = os.path.join(HERE, "..", "windows", "latveria_commands.txt")
+CMDS = [os.path.join(HERE, "..", "windows", f) for f in (sys.argv[1:] or ["latveria_commands.txt"])]
+TAG = "" if len(CMDS) == 1 else "_expansion"
 OUT = os.path.join(HERE, "..", "docs")
 
-X0, X1 = -155, 155
+X0, X1 = -305, 305
 Y0, Y1 = -12, 135
-Z0, Z1 = -256, 116
+Z0, Z1 = -256, 244
 TOK = re.compile(r"\$([xyz])\((-?[0-9.]+)\)")
 
 names = ["air"]
@@ -73,7 +74,8 @@ def color(name):
 def main():
     W = np.zeros((X1 - X0 + 1, Y1 - Y0 + 1, Z1 - Z0 + 1), dtype=np.uint16)
     n = 0
-    for line in open(CMDS, encoding="utf-8"):
+    import itertools
+    for line in itertools.chain(*[open(p, encoding="utf-8") for p in CMDS]):
         if line.startswith(("#", "!")):
             continue
         cmd = line.rstrip("\r\n").split("\t", 1)[1]
@@ -92,6 +94,8 @@ def main():
             x2, y2, z2 = x1, y1, z1
             blk = rest[1]
             flt = None
+        if y2 < Y0 or y1 > Y1:
+            continue
         a = (slice(x1 - X0, x2 - X0 + 1), slice(max(y1, Y0) - Y0, min(y2, Y1) - Y0 + 1), slice(z1 - Z0, z2 - Z0 + 1))
         v = bid(base(blk))
         if flt:
@@ -116,7 +120,7 @@ def main():
     rgb[~has] = (0, 0, 0)
     img = Image.fromarray(np.clip(rgb, 0, 255).astype(np.uint8).transpose(1, 0, 2))
     img = img.resize((img.width * 3, img.height * 3), Image.NEAREST)
-    img.save(os.path.join(OUT, "preview_top.png"))
+    img.save(os.path.join(OUT, "preview_top%s.png" % TAG))
 
     # elevation from the south (looking north), depth-shaded
     def elevation(axis_view, fname, flip=False):
@@ -136,16 +140,16 @@ def main():
         im = im.resize((im.width * 3, im.height * 3), Image.NEAREST)
         im.save(os.path.join(OUT, fname))
 
-    elevation("south", "preview_south.png")
-    elevation("east", "preview_east.png")
+    elevation("south", "preview_south%s.png" % TAG)
+    elevation("east", "preview_east%s.png" % TAG)
 
     # horizontal slices through the keep
-    for yy, nm in ((6, "dungeon"), (13, "ground"), (29, "second"), (39, "third")):
+    for yy, nm in (() if TAG else ((6, "dungeon"), (13, "ground"), (29, "second"), (39, "third"))):
         sl = W[:, yy - Y0, :]
         c_ = lut[sl]
         c_[sl == 0] = (20, 20, 20)
         im = Image.fromarray(np.clip(c_, 0, 255).astype(np.uint8).transpose(1, 0, 2))
-        im = im.crop((155 - 60, 256 - 225, 155 + 60, 256 - 95)).resize((120 * 5, 130 * 5), Image.NEAREST)
+        im = im.crop((-X0 - 60, -Z0 - 225, -X0 + 60, -Z0 - 95)).resize((120 * 5, 130 * 5), Image.NEAREST)
         im.save(os.path.join(OUT, "plan_%s.png" % nm))
     print("images written to", os.path.normpath(OUT))
 

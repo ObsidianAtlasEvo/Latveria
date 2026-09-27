@@ -28,6 +28,9 @@
     Text that must appear in the focused window's title (default "Minecraft").
 .PARAMETER ChatKey
     The key that opens chat in your controls (default T).
+.PARAMETER Centre
+    The centre block "X Y Z" to use (you are asked to confirm it). Without it you are
+    asked to type the coordinates.
 .PARAMETER FromSection
     Start at the first section whose title contains this text (for example
     "Doom Tower"), to rebuild one part - e.g. if chunks were not loaded yet.
@@ -45,6 +48,7 @@ param(
     [string]$WindowMatch = 'Minecraft',
     [string]$ChatKey = 'T',
     [string]$FromSection = '',
+    [string]$Centre = '',
     [switch]$DryRun
 )
 
@@ -55,7 +59,8 @@ if (-not $Here) { $Here = Split-Path -Parent $MyInvocation.MyCommand.Definition 
 if (-not $Here) { $Here = (Get-Location).Path }
 if (-not $CommandFile) { $CommandFile = Join-Path $Here 'latveria_commands.txt' }
 $Inv = [Globalization.CultureInfo]::InvariantCulture
-$ProgressFile = Join-Path $Here 'latveria_progress.txt'
+$stem = [IO.Path]::GetFileNameWithoutExtension($CommandFile) -replace '_commands$', ''
+$ProgressFile = Join-Path $Here ($stem + '_progress.txt')
 $LogFile = Join-Path $Here 'latveria_log.txt'
 
 # ---------------------------------------------------------------------------
@@ -115,7 +120,9 @@ function Write-Log([string]$msg) {
 if (-not (Test-Path $CommandFile)) { throw "Command file not found: $CommandFile" }
 $items = New-Object System.Collections.Generic.List[object]
 $section = 'Start'
+$yMin = -13; $yMax = 131
 foreach ($line in [IO.File]::ReadAllLines($CommandFile)) {
+    if ($line -match '^# range y (-?\d+) (-?\d+)') { $yMin = [int]$Matches[1]; $yMax = [int]$Matches[2]; continue }
     if ($line.Length -eq 0 -or $line.StartsWith('#')) { continue }
     $parts = $line.Split("`t")
     if ($parts[0] -eq '!section') { $section = $parts[1]; continue }
@@ -149,6 +156,13 @@ if ((Test-Path $ProgressFile) -and -not $DryRun) {
         }
     }
 }
+if ($null -eq $cx -and $Centre -ne '') {
+    $nums = [regex]::Matches($Centre, '-?\d+') | ForEach-Object { [int]$_.Value }
+    if ($nums.Count -eq 3) {
+        $ans = Read-Host ("  Build around the centre {0} {1} {2} (the centre of the first build)? [Y/n]" -f $nums[0], $nums[1], $nums[2])
+        if ($ans -notmatch '^[nN]') { $cx, $cy, $cz = $nums }
+    }
+}
 if ($null -eq $cx) {
     Write-Host '  Stand on the centre block (the middle of the future plaza), press F3 and'
     Write-Host '  read the "Block:" line - the block your FEET are in.'
@@ -169,8 +183,8 @@ if ($FromSection -ne '') {
     Write-Host ("  Starting from section: {0}" -f $items[$found].Section) -ForegroundColor Cyan
     Write-Host '  (If the build site is far from you, run the "Preparing the site" section first so the chunks are force-loaded.)'
 }
-if ($cy - 12 -lt -64 -or $cy + 130 -gt 319) {
-    Write-Host ("  Y={0} is out of range: the build needs Y between -52 and 189." -f $cy) -ForegroundColor Red
+if ($cy + $yMin -lt -64 -or $cy + $yMax -gt 319) {
+    Write-Host ("  Y={0} is out of range: this build needs Y between {1} and {2}." -f $cy, (-64 - $yMin), (319 - $yMax)) -ForegroundColor Red
     exit 1
 }
 

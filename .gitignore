@@ -3,3 +3,4 @@ __pycache__/
 windows/latveria_progress.txt
 windows/latveria_log.txt
 windows/latveria_resolved.txt
+windows/*_progress.txt

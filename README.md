@@ -69,6 +69,32 @@ Run `Build-Latveria.bat` with parameters (or call the `.ps1` directly):
 
 ---
 
+## Survival Expansion v2 (second command file)
+
+Run this **after the main build has finished**. It keeps everything already built and adds a
+working-capital layer around it. Start **`windows/Build-Latveria-Expansion.bat`** from anywhere
+in the world: it already knows your centre (**799 70 −10090**) and only asks you to confirm.
+It has about 6,650 commands and takes about **25–30 minutes**. The same controls apply
+(F7 / F10 / auto-pause) and it has its own resume file.
+
+| District | What's added |
+|---|---|
+| **Underground** | Sewers (5-wide, lit, with a water channel) under Doom Boulevard and Werner Avenue, reached by 10 street manholes. The **Great Cistern**, a 51×41 pillared reservoir beneath the south town, is reached from the sewer by a grand stair. **Doom's escape tunnel** runs from a secret door in the dungeon corridor down to the sewers and out to a hermit's hut beyond the west gate, with a provisions chest on the way. |
+| **East: Doomwerk** | **Depository**: 120 labelled double chests in 16 categories, plus a receiving bay. **Foundry**: hopper-fed banks of 12 furnaces, 8 blast furnaces and 6 smokers. Load ore in the top chests and fuel in the back chests, and collect from the end chest. **Lava works**: 8 dripstone lava cauldrons, renewable. **Golem Works iron farm**: villager pod, pumpkin-headed zombie, water-channel pads, lava blade, and iron collected in a chest. It starts after the villagers' first night. **Hall of Shadows mob XP farm**: a dark 24×14 spawning hall with stepped channels and a 21-block drop, so you one-hit the mobs through a slot. **Doomwald tree plantation** (saplings and grown trees). A 26-terrace **open-pit quarry**. The **Deep Mine**: a ladder shaft to an iron level (Y≈10) and a diamond level (Y≈−58), each with branch tunnels and supply chests. |
+| **South: Southmarch** | **The Exchange**: a trading hall with 22 locked-in, named villagers (librarians, clerics, smiths and more), each behind their job block. **Nursery**: a villager breeder with beds, a farmer and a carrot patch, closed by an iron door with buttons. Sugar cane, pumpkin and melon, and bamboo fields. A **ranch** of six breeding pens (cows, sheep, pigs, chickens, goats, rabbits), each with a feed chest. **Harbour**: a lake with piers, boats, fishermen's huts, a freight yard with a crane, and a lighthouse. |
+| **West: West March** | **Mephisto Gate Nether hub**: two lit portals, a lodestone and a Nether wart farm on soul sand. The **Ambassador's Manor**, a home for you: hearth, full workshop, 12 double chests, an ender chest, a bedroom, an enchanting study, brewing, and a garden with a saddled horse. |
+| **Transport** | Two powered minecart lines: Plaza ↔ Doomwerk (270 blocks) and Plaza ↔ Harbour. Parked carts wait at the stations; nudge forward to set off. |
+| **Defence** | Arrow batteries in the west, east and south gate turrets. Enter the turret from inside the town and flip a lever to fire across the gate. |
+| **Lighting audit** | The generator works out block light across the whole city and the new districts, and adds lanterns wherever a monster could spawn at night. Spots right beside doors or ladders get invisible light blocks instead. |
+
+Everything in the expansion is checked against the model of the finished first build, so nothing
+lands on top of it. `generator/verify.py latveria_commands.txt latveria_expansion_commands.txt`
+reports **0 problems across 2.72 million blocks and 293 entities**.
+
+![Expansion plan](docs/preview_top_expansion.png)
+
+---
+
 ## What gets built
 
 ### Castle Doom (north, on a 12-block crag)
@@ -178,6 +204,9 @@ Run `Build-Latveria.bat` with parameters (or call the `.ps1` directly):
 ```
 generator/          Python generator (no dependencies) + optional preview/verify tools
   build.py          -> writes windows/latveria_commands.txt
+  build_expansion.py -> writes windows/latveria_expansion_commands.txt (needs numpy)
+  expansion.py      the Survival Expansion v2 districts, farms and lighting audit
+  sim.py            voxel model of the finished world + block-light audit
   core.py           command engine: validation, chat-length splitting, coordinate tokens
   terrain.py        clearing, crag, moat, Grand Stair
   castle.py         walls, towers, gatehouse, courtyard buildings
