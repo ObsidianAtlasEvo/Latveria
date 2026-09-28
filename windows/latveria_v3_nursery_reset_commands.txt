@@ -1,0 +1,44 @@
+# Latveria v3 - nursery bed reset (optional; run after Refinement v3 whenever wanted) - 38 commands
+# Additive layer: run AFTER latveria_commands, latveria_expansion and latveria_lighting.
+# mode additive
+# range y -1 7
+!section	Nursery - re-seating the beds (releases old claims)
+0	tp @s $x(-53.5) $y(6) $z(146.5)
+0	title @s actionbar {text:"Refinement v3: Nursery - re-seating the beds (releases old claims)",color:"dark_green"}
+!wait	6000	loading Nursery - re-seating the beds (releases old claims)
+0	execute if block $x(-62) $y(0) $z(137) red_bed[part=head,facing=north] run setblock $x(-62) $y(0) $z(137) air
+0	execute if block $x(-62) $y(0) $z(138) red_bed[part=foot,facing=north] run setblock $x(-62) $y(0) $z(138) air
+0	execute if block $x(-62) $y(0) $z(138) air if block $x(-62) $y(0) $z(137) air run setblock $x(-62) $y(0) $z(138) red_bed[part=foot,facing=north] strict
+0	execute if block $x(-62) $y(0) $z(138) red_bed[part=foot,facing=north] if block $x(-62) $y(0) $z(137) air run setblock $x(-62) $y(0) $z(137) red_bed[part=head,facing=north] strict
+0	execute if block $x(-60) $y(0) $z(137) yellow_bed[part=head,facing=north] run setblock $x(-60) $y(0) $z(137) air
+0	execute if block $x(-60) $y(0) $z(138) yellow_bed[part=foot,facing=north] run setblock $x(-60) $y(0) $z(138) air
+0	execute if block $x(-60) $y(0) $z(138) air if block $x(-60) $y(0) $z(137) air run setblock $x(-60) $y(0) $z(138) yellow_bed[part=foot,facing=north] strict
+0	execute if block $x(-60) $y(0) $z(138) yellow_bed[part=foot,facing=north] if block $x(-60) $y(0) $z(137) air run setblock $x(-60) $y(0) $z(137) yellow_bed[part=head,facing=north] strict
+0	execute if block $x(-58) $y(0) $z(137) lime_bed[part=head,facing=north] run setblock $x(-58) $y(0) $z(137) air
+0	execute if block $x(-58) $y(0) $z(138) lime_bed[part=foot,facing=north] run setblock $x(-58) $y(0) $z(138) air
+0	execute if block $x(-58) $y(0) $z(138) air if block $x(-58) $y(0) $z(137) air run setblock $x(-58) $y(0) $z(138) lime_bed[part=foot,facing=north] strict
+0	execute if block $x(-58) $y(0) $z(138) lime_bed[part=foot,facing=north] if block $x(-58) $y(0) $z(137) air run setblock $x(-58) $y(0) $z(137) lime_bed[part=head,facing=north] strict
+0	execute if block $x(-56) $y(0) $z(137) light_blue_bed[part=head,facing=north] run setblock $x(-56) $y(0) $z(137) air
+0	execute if block $x(-56) $y(0) $z(138) light_blue_bed[part=foot,facing=north] run setblock $x(-56) $y(0) $z(138) air
+0	execute if block $x(-56) $y(0) $z(138) air if block $x(-56) $y(0) $z(137) air run setblock $x(-56) $y(0) $z(138) light_blue_bed[part=foot,facing=north] strict
+0	execute if block $x(-56) $y(0) $z(138) light_blue_bed[part=foot,facing=north] if block $x(-56) $y(0) $z(137) air run setblock $x(-56) $y(0) $z(137) light_blue_bed[part=head,facing=north] strict
+0	execute if block $x(-54) $y(0) $z(137) pink_bed[part=head,facing=north] run setblock $x(-54) $y(0) $z(137) air
+0	execute if block $x(-54) $y(0) $z(138) pink_bed[part=foot,facing=north] run setblock $x(-54) $y(0) $z(138) air
+0	execute if block $x(-54) $y(0) $z(138) air if block $x(-54) $y(0) $z(137) air run setblock $x(-54) $y(0) $z(138) pink_bed[part=foot,facing=north] strict
+0	execute if block $x(-54) $y(0) $z(138) pink_bed[part=foot,facing=north] if block $x(-54) $y(0) $z(137) air run setblock $x(-54) $y(0) $z(137) pink_bed[part=head,facing=north] strict
+0	execute if block $x(-52) $y(0) $z(137) white_bed[part=head,facing=north] run setblock $x(-52) $y(0) $z(137) air
+0	execute if block $x(-52) $y(0) $z(138) white_bed[part=foot,facing=north] run setblock $x(-52) $y(0) $z(138) air
+0	execute if block $x(-52) $y(0) $z(138) air if block $x(-52) $y(0) $z(137) air run setblock $x(-52) $y(0) $z(138) white_bed[part=foot,facing=north] strict
+0	execute if block $x(-52) $y(0) $z(138) white_bed[part=foot,facing=north] if block $x(-52) $y(0) $z(137) air run setblock $x(-52) $y(0) $z(137) white_bed[part=head,facing=north] strict
+0	execute if block $x(-50) $y(0) $z(137) orange_bed[part=head,facing=north] run setblock $x(-50) $y(0) $z(137) air
+0	execute if block $x(-50) $y(0) $z(138) orange_bed[part=foot,facing=north] run setblock $x(-50) $y(0) $z(138) air
+0	execute if block $x(-50) $y(0) $z(138) air if block $x(-50) $y(0) $z(137) air run setblock $x(-50) $y(0) $z(138) orange_bed[part=foot,facing=north] strict
+0	execute if block $x(-50) $y(0) $z(138) orange_bed[part=foot,facing=north] if block $x(-50) $y(0) $z(137) air run setblock $x(-50) $y(0) $z(137) orange_bed[part=head,facing=north] strict
+0	execute if block $x(-48) $y(0) $z(137) cyan_bed[part=head,facing=north] run setblock $x(-48) $y(0) $z(137) air
+0	execute if block $x(-48) $y(0) $z(138) cyan_bed[part=foot,facing=north] run setblock $x(-48) $y(0) $z(138) air
+0	execute if block $x(-48) $y(0) $z(138) air if block $x(-48) $y(0) $z(137) air run setblock $x(-48) $y(0) $z(138) cyan_bed[part=foot,facing=north] strict
+0	execute if block $x(-48) $y(0) $z(138) cyan_bed[part=foot,facing=north] if block $x(-48) $y(0) $z(137) air run setblock $x(-48) $y(0) $z(137) cyan_bed[part=head,facing=north] strict
+0	execute if block $x(-46) $y(0) $z(137) magenta_bed[part=head,facing=north] run setblock $x(-46) $y(0) $z(137) air
+0	execute if block $x(-46) $y(0) $z(138) magenta_bed[part=foot,facing=north] run setblock $x(-46) $y(0) $z(138) air
+0	execute if block $x(-46) $y(0) $z(138) air if block $x(-46) $y(0) $z(137) air run setblock $x(-46) $y(0) $z(138) magenta_bed[part=foot,facing=north] strict
+0	execute if block $x(-46) $y(0) $z(138) magenta_bed[part=foot,facing=north] if block $x(-46) $y(0) $z(137) air run setblock $x(-46) $y(0) $z(137) magenta_bed[part=head,facing=north] strict

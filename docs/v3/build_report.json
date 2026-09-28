@@ -1,0 +1,197 @@
+{
+ "commands": 2648,
+ "sections": [
+  "Golem Works rework",
+  "Castle Doom - the roofscape",
+  "Castle Doom - centuries in the stone",
+  "Castle Doom - the industrial east",
+  "Castle Doom - the halls within",
+  "Castle Doom - beneath the throne",
+  "Castle Doom - the Time Platform sequence",
+  "Castle Doom - passages behind the tapestries",
+  "Castle Doom - the oriel study",
+  "Castle Doom - the Deep Cells",
+  "Castle Doom - the Doombot proving ground",
+  "Doomstadt - the Chancery and the Ministry of Records",
+  "Doomstadt - the Palace of Justice and the Council",
+  "Doomstadt - the Market Square",
+  "Doomstadt - the Garden of the Republic and the Decree Wall",
+  "Doomstadt - back yards, block 1 (old)",
+  "Doomstadt - back yards, block 2 (old)",
+  "Doomstadt - back yards, block 3 (weavers)",
+  "Doomstadt - back yards, block 4 (weavers)",
+  "Doomstadt - back yards, block 5 (weavers)",
+  "Doomstadt - back yards, block 6 (old)",
+  "Doomstadt - back yards, block 7 (old)",
+  "Doomstadt - back yards, block 8 (weavers)",
+  "Doomstadt - back yards, block 11 (old)",
+  "Doomstadt - back yards, block 12 (old)",
+  "Doomstadt - back yards, block 13 (weavers)",
+  "Doomstadt - back yards, block 15 (weavers)",
+  "Doomstadt - back yards, block 16 (castle)",
+  "Doomstadt - back yards, block 18 (workshops)",
+  "Doomstadt - back yards, block 20 (workshops)",
+  "Doomstadt - back yards, block 21 (castle)",
+  "Doomstadt - back yards, block 22 (castle)",
+  "Doomstadt - back yards, block 23 (workshops)",
+  "Doomstadt - back yards, block 26 (castle)",
+  "Doomstadt - back yards, block 27 (castle)",
+  "Doomstadt - back yards, block 28 (workshops)",
+  "Doomstadt - back yards, block 29 (workshops)",
+  "Doomstadt - street names along Kastellgasse",
+  "Doomstadt - street names along Weavers' Lane",
+  "Doomstadt - street names along Tanners' Row",
+  "Doomstadt - street names along Werner Avenue",
+  "Doomstadt - worn streets (west)",
+  "Doomstadt - worn streets (centre)",
+  "Doomstadt - worn streets (east)",
+  "Under Doomstadt - junction signs",
+  "Under Doomstadt - the sewer crossing",
+  "Southmarch - the Villager Nursery and the Children's Yard",
+  "Doomwerk - the Sorting Office (item sorter)",
+  "Doomwerk - the Foundry (audit and output lamps)",
+  "Doomwerk - chimneys, pipes and yards",
+  "Southmarch - the Harbour and the waterfront",
+  "Southmarch - windmill, scarecrows and hay",
+  "West March - the Ambassador's Manor greenhouse",
+  "Stations - Plaza - East Line",
+  "Stations - Doomwerk",
+  "Stations - Harbour",
+  "Castle Doom - the alarm bells",
+  "The approach - boundary stones, trees and a shrine",
+  "Finishing"
+ ],
+ "structural_problems": [],
+ "stats": {
+  "swap": 698,
+  "swapped_cells": 3342,
+  "fill_keep": 685,
+  "put": 878,
+  "signs": 47,
+  "restore_guard": 7,
+  "lights": 87,
+  "pieces": 189,
+  "pair": 23,
+  "stock": 44,
+  "books": 9,
+  "singles_skipped": 11,
+  "summon": 8,
+  "carve": 34
+ },
+ "skipped_pieces": [
+  [
+   "castle_eras",
+   "single",
+   "occupied at (-49, 16, -209)"
+  ],
+  [
+   "castle_eras",
+   "single",
+   "occupied at (-45, 19, -209)"
+  ],
+  [
+   "castle_eras",
+   "single",
+   "occupied at (-21, 13, -209)"
+  ],
+  [
+   "castle_eras",
+   "single",
+   "occupied at (-5, 19, -209)"
+  ],
+  [
+   "castle_eras",
+   "single",
+   "occupied at (-53, 17, -200)"
+  ],
+  [
+   "castle_eras",
+   "single",
+   "occupied at (-53, 14, -165)"
+  ],
+  [
+   "castle_eras",
+   "single",
+   "occupied at (-53, 20, -155)"
+  ],
+  [
+   "castle_eras",
+   "single",
+   "occupied at (-53, 17, -120)"
+  ],
+  [
+   "gov_justice",
+   "single",
+   "occupied at (27, 0, -55)"
+  ],
+  [
+   "southmarch",
+   "single",
+   "occupied at (-105, 0, 115)"
+  ],
+  [
+   "southmarch",
+   "single",
+   "occupied at (-103, 0, 115)"
+  ]
+ ],
+ "mechanisms": [
+  [
+   "golem_works",
+   "Golem Works night shutter",
+   "requires live Minecraft test",
+   "Inverted daylight detector (255,13,-89) powers the sticky piston below it; at night and in rain the piston pushes a stone-brick block into the villagers' only window onto the zombie, so they stop panicking and sleep. Lever (256,12,-89) on the piston's east face holds it shut (farm off)."
+  ],
+  [
+   "castle_interiors",
+   "Throne defence",
+   "mechanically reasoned; requires live test",
+   "Two dispensers of arrows at the throne's sides, facing down the hall. Each fires once per flip of the lever on its top. Manual only: arrows harm players, so nothing fires by itself."
+  ],
+  [
+   "secret_throne",
+   "Throne hatch",
+   "mechanically reasoned; requires live test",
+   "Sticky piston (6,14,-194) facing west, placed extended; its head (5,14,-194) holds the dais block (4,14,-194) in place. The lever on the pedestal (6,16,-194) strongly powers the pedestal block (6,15,-194), which powers the piston below it. Lever OFF: the piston retracts and pulls the block one cell east - the hatch opens onto a ladder shaft down to the Time Platform chamber. Lever ON: closed."
+  ],
+  [
+   "time_platform",
+   "Time Platform calibration",
+   "mechanically reasoned; requires live test",
+   "Lever (-4,2,-194) powers the wall block behind it; repeaters (delay 4) replace every other wall block at z=-195 from x=-3 to x=22, each powering the next wall block; the wall blocks behind the seven console lamps (x=-1..23 step 4) light them one after another (0.8 s apart). No block moves or breaks."
+  ],
+  [
+   "deep_cells",
+   "Deep Cells doors",
+   "structurally verified",
+   "Iron cell doors open only with the stone button on the corridor side; prisoners cannot open them."
+  ],
+  [
+   "nursery",
+   "Nursery baby exit",
+   "mechanically reasoned; requires live test",
+   "A 1x1 opening at floor level in the nursery's east wall (-44,0,145): baby villagers (0.98 tall) fit, adults (1.95) do not. Children who wander through drop 2 blocks into the sunken Children's Yard and cannot climb back. Open the fence gate to let grown villagers walk up the stairs into the town."
+  ],
+  [
+   "sorting_office",
+   "Sorting Office filters",
+   "mechanically reasoned; requires live test",
+   "Per item: filter hopper F (y1) under the stream holds 18 of the item + 4 named blockers (comparator signal 1). A 19th item raises it to 2; the dust passes 2->1 into a repeater, which powers block P and turns off the torch on P; the torch's line (in the floor) stops powering the block under the lower hopper B, B unlocks, pulls one item from F into the chest and locks again. Full chest: B and F fill and the item rides the stream to OVERFLOW. No lava, no cactus: nothing is ever destroyed. At most one unlock per 8 game ticks keeps the torch below its burn-out limit."
+  ],
+  [
+   "foundry",
+   "Foundry smelter banks",
+   "structurally verified",
+   "Input chests (y4) -> hopper line (y3) -> one downward hopper per smelter (top = input); fuel chests (y3, rear) -> hopper line (y2) -> side hoppers (fuel); output hoppers (y0) -> double chest. The wiring is correct. Non-smeltable items in the input chests stop that smelter (not destructive). v3 adds a comparator + lamp beside each output chest."
+  ],
+  [
+   "castle_alarm",
+   "Town gate arrow batteries",
+   "structurally verified",
+   "Each battery's dispensers fire only when its lever is pulled (v2 design); no pressure plates or tripwires anywhere, so friendly players cannot trigger them."
+  ]
+ ],
+ "entities_before": 293,
+ "entities_after": 301,
+ "generator_seconds": 6.9
+}

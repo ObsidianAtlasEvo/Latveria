@@ -45,6 +45,9 @@ class World:
         self.states = ["air"]
         self.sid = {"air": 0}
         self.trees = []
+        self.entities = []        # dicts: type, x, y, z, nbt, tag (v3 idempotent tag or None), layer
+        self.layer = ""
+        self.skipped_keep = 0     # guarded writes that found their cell occupied
 
     # ------------------------------------------------------------------
     def st(self, spec):
@@ -60,6 +63,14 @@ class World:
 
     def apply(self, text):
         op = text.split(" ", 1)[0]
+        if op == "execute":
+            return self._apply_execute(text)
+        if op == "summon":
+            return self._summon(text, None)
+        if op == "kill":
+            return self._kill(text)
+        if op == "tp" and text.startswith("tp @e["):
+            return self._tp(text)
         if op == "place":
             v = [int(float(t) // 1) for _, t in TOK.findall(text)]
             self.trees.append(tuple(v))
@@ -75,16 +86,78 @@ class World:
             x2, y2, z2 = v
         blk = rest[1]
         flt = rest[3] if len(rest) > 3 and rest[2] == "replace" else None
+        keep = len(rest) > 2 and rest[2] == "keep"
         sub = self.W[self._sl(x1, y1, z1, x2, y2, z2)]
         new = self.st(blk)
         if flt:
             fname = flt.split("[", 1)[0]
             ids = [i for i, s in enumerate(self.states) if s.split("[", 1)[0] == fname]
             sub[np.isin(sub, ids)] = new
+        elif keep:
+            m = sub == 0
+            self.skipped_keep += int(sub.size - m.sum())
+            sub[m] = new
         else:
             sub[...] = new
 
+    # ---- entities -----------------------------------------------------------
+    _SUM = re.compile(r"summon (?:minecraft:)?([a-z_]+) (\S+) (\S+) (\S+)\s*(.*)$")
+
+    def _summon(self, text, tag):
+        m = self._SUM.search(text)
+        if not m:
+            return
+        v = [float(t) for _, t in TOK.findall(text)][:3]
+        nbt = m.group(5)
+        name = re.search(r'CustomName:(?:\{text:)?"([^"]*)"', nbt)
+        self.entities.append({"type": m.group(1), "x": v[0], "y": v[1], "z": v[2], "nbt": nbt, "tag": tag,
+                              "name": name.group(1) if name else "", "layer": self.layer})
+
+    def _kill(self, text):
+        # only the project's own tagged kills are modelled (v3 never kills anything else)
+        m = re.search(r"tag=(lv3_[a-z0-9_]+)", text)
+        if m:
+            self.entities = [e for e in self.entities if e["tag"] != m.group(1)]
+
+    def _tp(self, text):
+        # tp @e[type=T,name="N",x=..,y=..,z=..,distance=..R,limit=1] X Y Z [yaw pitch]
+        sel, rest = text[6:].split("] ", 1)
+        typ = re.search(r"type=([a-z_]+)", sel)
+        nm = re.search(r'name="([^"]*)"', sel)
+        v = [float(t) for _, t in TOK.findall(rest)][:3]
+        for e in self.entities:
+            if (not typ or e["type"] == typ.group(1)) and (not nm or e["name"] == nm.group(1)):
+                e["x"], e["y"], e["z"] = v
+                return
+
+    def _apply_execute(self, text):
+        run = text.split(" run ", 1)
+        if len(run) != 2:
+            return
+        cond, cmd = run
+        m = re.search(r"unless entity @e\[tag=(lv3_[a-z0-9_]+)", cond)
+        if m and cmd.startswith("summon"):
+            if any(e["tag"] == m.group(1) for e in self.entities):
+                return               # idempotent: already there
+            return self._summon(cmd, m.group(1))
+        m = re.search(r'unless entity @e\[type=([a-z_]+),name="([^"]*)"', cond)
+        if m and cmd.startswith("summon"):
+            if any(e["type"] == m.group(1) and e["name"] == m.group(2) for e in self.entities):
+                return               # restore only a missing named entity
+            return self._summon(cmd, None)
+        # block conditions: if/unless block <x> <y> <z> <block[states]>
+        for neg, x, y, z, blk in re.findall(r"(if|unless) block \$x\((-?[0-9.]+)\) \$y\((-?[0-9.]+)\) \$z\((-?[0-9.]+)\) (\S+)", cond):
+            here = self.get(int(float(x) // 1), int(float(y) // 1), int(float(z) // 1))
+            want = blk.replace("minecraft:", "")
+            match = here == want if "[" in want else here.split("[", 1)[0] == want
+            if (neg == "if") != match:
+                return
+        if cmd.startswith(("fill", "setblock")):
+            return self.apply(cmd)
+
     def load_file(self, path):
+        import os as _os
+        self.layer = _os.path.basename(path)
         for line in open(path, encoding="utf-8"):
             if line.startswith(("#", "!")):
                 continue

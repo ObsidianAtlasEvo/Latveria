@@ -1,0 +1,378 @@
+<#
+.SYNOPSIS
+    Applies Latveria Refinement v3 - an ADDITIVE layer over the finished Castle Doom
+    and Doomstadt - by typing its commands into Minecraft Java 26.1.2 chat.
+
+    Nothing is cleared.  Every command only places blocks into empty air, swaps one
+    named block for another where that exact block still stands, or summons an entity
+    that is not already there (tagged lv3_...).  No gamerule and no forceload is used:
+    the player is teleported to each section so its chunks are loaded.
+
+.DESCRIPTION
+    No server files, datapacks or mods are needed - only operator permission
+    (or cheats enabled in single player).
+
+      1. Stand on the block you want as the centre of Doomstadt's plaza.
+      2. Press F3 and note the "Block:" X Y Z (the block your feet are in).
+      3. Run Build-Latveria.bat, type those three numbers, then click back
+         into Minecraft and leave the keyboard and mouse alone.
+
+    Hotkeys while it runs:   F7 = pause / resume     F10 = stop (progress is saved)
+    If the Minecraft window loses focus the sender pauses by itself, so it can
+    never type into another program. Run it again later to resume.
+
+.PARAMETER DelayMs
+    Pause after every command, in milliseconds (default 60). Raise it on a slow
+    or busy server.
+.PARAMETER ChatOpenMs
+    Wait between pressing the chat key and pasting (default 80). Raise it if
+    commands get lost (the chat box opens too slowly).
+.PARAMETER HeavyFactor
+    Multiplier for the extra pauses after big fills (default 1.0; 2.0 = twice as gentle).
+.PARAMETER WindowMatch
+    Text that must appear in the focused window's title (default "Minecraft").
+.PARAMETER ChatKey
+    The key that opens chat in your controls (default T).
+.PARAMETER Centre
+    The centre block "X Y Z" to use (you are asked to confirm it). Without it you are
+    asked to type the coordinates.
+.PARAMETER Section
+    Run only the sections whose title contains this text (for example "Golem"), each
+    preceded by its own teleport.  Every section is safe to run again.
+.PARAMETER ListSections
+    Print the section titles and exit.
+.PARAMETER FromSection
+    Start at the first section whose title contains this text (for example
+    "Doom Tower"), to rebuild one part - e.g. if chunks were not loaded yet.
+    Sections are listed in README.md and printed while the script runs.
+.PARAMETER DryRun
+    Do not type anything; write the final commands with real coordinates to
+    latveria_resolved.txt so you can inspect them.
+#>
+[CmdletBinding()]
+param(
+    [string]$CommandFile = '',
+    [int]$DelayMs = 60,
+    [int]$ChatOpenMs = 80,
+    [double]$HeavyFactor = 1.0,
+    [string]$WindowMatch = 'Minecraft',
+    [string]$ChatKey = 'T',
+    [string]$FromSection = '',
+    [string]$Section = '',
+    [switch]$ListSections,
+    [string]$Centre = '',
+    [switch]$DryRun
+)
+
+$ErrorActionPreference = 'Stop'
+# Windows PowerShell 5.1 leaves $PSScriptRoot empty inside param(), so work out the folder here
+$Here = $PSScriptRoot
+if (-not $Here) { $Here = Split-Path -Parent $MyInvocation.MyCommand.Definition }
+if (-not $Here) { $Here = (Get-Location).Path }
+if (-not $CommandFile) { $CommandFile = Join-Path $Here 'latveria_commands.txt' }
+$Inv = [Globalization.CultureInfo]::InvariantCulture
+$stem = [IO.Path]::GetFileNameWithoutExtension($CommandFile) -replace '_commands$', ''
+$ProgressFile = Join-Path $Here ($stem + '_progress.txt')
+$LogFile = Join-Path $Here 'latveria_log.txt'
+
+# ---------------------------------------------------------------------------
+# Win32 keyboard input (SendInput) and window/hotkey helpers
+# ---------------------------------------------------------------------------
+if (-not ('LatvInput' -as [type])) {
+Add-Type -TypeDefinition @'
+using System;
+using System.Runtime.InteropServices;
+using System.Text;
+public static class LatvInput {
+    [StructLayout(LayoutKind.Sequential)] struct MOUSEINPUT { public int dx; public int dy; public uint mouseData; public uint dwFlags; public uint time; public IntPtr dwExtraInfo; }
+    [StructLayout(LayoutKind.Sequential)] struct KEYBDINPUT { public ushort wVk; public ushort wScan; public uint dwFlags; public uint time; public IntPtr dwExtraInfo; }
+    [StructLayout(LayoutKind.Explicit)] struct INPUTUNION { [FieldOffset(0)] public MOUSEINPUT mi; [FieldOffset(0)] public KEYBDINPUT ki; }
+    [StructLayout(LayoutKind.Sequential)] struct INPUT { public uint type; public INPUTUNION u; }
+    [DllImport("user32.dll", SetLastError = true)] static extern uint SendInput(uint n, INPUT[] inputs, int size);
+    [DllImport("user32.dll")] static extern uint MapVirtualKey(uint code, uint mapType);
+    [DllImport("user32.dll")] static extern IntPtr GetForegroundWindow();
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)] static extern int GetWindowText(IntPtr h, StringBuilder sb, int max);
+    [DllImport("user32.dll")] static extern short GetAsyncKeyState(int vk);
+
+    static INPUT Key(ushort vk, bool up) {
+        INPUT i = new INPUT();
+        i.type = 1;
+        i.u.ki.wVk = vk;
+        i.u.ki.wScan = (ushort)MapVirtualKey(vk, 0);
+        i.u.ki.dwFlags = up ? 2u : 0u;
+        return i;
+    }
+    static void Send(INPUT[] a) { SendInput((uint)a.Length, a, Marshal.SizeOf(typeof(INPUT))); }
+    public static void Tap(int vk) { Send(new INPUT[] { Key((ushort)vk, false), Key((ushort)vk, true) }); }
+    public static void Chord(int mod, int vk) {
+        Send(new INPUT[] { Key((ushort)mod, false), Key((ushort)vk, false), Key((ushort)vk, true), Key((ushort)mod, true) });
+    }
+    public static bool Down(int vk) { return (GetAsyncKeyState(vk) & 0x8001) != 0; }
+    public static string ForegroundTitle() {
+        StringBuilder sb = new StringBuilder(512);
+        GetWindowText(GetForegroundWindow(), sb, 512);
+        return sb.ToString();
+    }
+}
+'@
+}
+
+$VK_RETURN = 0x0D; $VK_CONTROL = 0x11; $VK_A = 0x41; $VK_V = 0x56
+$VK_F7 = 0x76; $VK_F10 = 0x79
+$VK_CHAT = [int][char]($ChatKey.ToUpper()[0])
+if ($ChatKey -eq '/') { $VK_CHAT = 0xBF }
+
+function Write-Log([string]$msg) {
+    Add-Content -Path $LogFile -Value ("{0:yyyy-MM-dd HH:mm:ss}  {1}" -f (Get-Date), $msg)
+}
+
+# ---------------------------------------------------------------------------
+# load the command list
+# ---------------------------------------------------------------------------
+if (-not (Test-Path $CommandFile)) { throw "Command file not found: $CommandFile" }
+$items = New-Object System.Collections.Generic.List[object]
+$section = 'Start'
+$yMin = -13; $yMax = 131
+$additive = $false
+$secStart = @{}
+foreach ($line in [IO.File]::ReadAllLines($CommandFile)) {
+    if ($line -match '^# range y (-?\d+) (-?\d+)') { $yMin = [int]$Matches[1]; $yMax = [int]$Matches[2]; continue }
+    if ($line -match '^# mode additive') { $additive = $true; continue }
+    if ($line.Length -eq 0 -or $line.StartsWith('#')) { continue }
+    $parts = $line.Split("`t")
+    if ($parts[0] -eq '!section') { $section = $parts[1]; $secStart[$section] = $items.Count; continue }
+    if ($parts[0] -eq '!wait') {
+        $items.Add([pscustomobject]@{ Kind = 'wait'; Wait = [int]$parts[1]; Text = $parts[2]; Section = $section })
+        continue
+    }
+    $items.Add([pscustomobject]@{ Kind = 'cmd'; Wait = [int]$parts[0]; Text = $parts[1]; Section = $section })
+}
+$total = $items.Count
+
+# the prelude of a section = its commands up to and including the first wait (the teleport that loads it)
+function Get-Prelude([int]$i) {
+    $s = $secStart[$items[$i].Section]
+    $out = New-Object System.Collections.Generic.List[int]
+    if ($null -eq $s) { return $out }
+    for ($k = $s; $k -lt $total -and $items[$k].Section -eq $items[$i].Section; $k++) {
+        $out.Add($k)
+        if ($items[$k].Kind -eq 'wait') { break }
+    }
+    return $out
+}
+if ($ListSections) {
+    foreach ($k in ($secStart.GetEnumerator() | Sort-Object Value)) { Write-Host ("  {0,6}  {1}" -f $k.Value, $k.Key) }
+    exit 0
+}
+
+# ---------------------------------------------------------------------------
+# centre coordinates and resume
+# ---------------------------------------------------------------------------
+Write-Host ''
+Write-Host '  ==========================================================' -ForegroundColor DarkGreen
+Write-Host '     CASTLE DOOM & DOOMSTADT  -  Latveria Refinement v3 (additive)' -ForegroundColor Green
+Write-Host '  ==========================================================' -ForegroundColor DarkGreen
+Write-Host ("  {0} commands loaded from {1}" -f $total, (Split-Path $CommandFile -Leaf))
+Write-Host ''
+
+$start = 0
+$cx = $null
+if ((Test-Path $ProgressFile) -and -not $DryRun) {
+    $p = (Get-Content $ProgressFile -Raw).Trim().Split(' ')
+    if ($p.Count -ge 4) {
+        $ans = Read-Host ("  A previous build stopped at command {0} of {1} (centre {2} {3} {4}). Resume it? [Y/n]" -f $p[3], $total, $p[0], $p[1], $p[2])
+        if ($ans -notmatch '^[nN]') {
+            $cx = [int]$p[0]; $cy = [int]$p[1]; $cz = [int]$p[2]
+            $start = [Math]::Max(0, [int]$p[3] - 1)   # the last sent command is repeated: all v3 commands are idempotent
+        }
+    }
+}
+if ($null -eq $cx -and $Centre -ne '') {
+    $nums = [regex]::Matches($Centre, '-?\d+') | ForEach-Object { [int]$_.Value }
+    if ($nums.Count -eq 3) {
+        $ans = Read-Host ("  Build around the centre {0} {1} {2} (the centre of the first build)? [Y/n]" -f $nums[0], $nums[1], $nums[2])
+        if ($ans -notmatch '^[nN]') { $cx, $cy, $cz = $nums }
+    }
+}
+if ($null -eq $cx) {
+    Write-Host '  Stand on the centre block (the middle of the future plaza), press F3 and'
+    Write-Host '  read the "Block:" line - the block your FEET are in.'
+    while ($true) {
+        $raw = Read-Host '  Centre X Y Z'
+        $nums = [regex]::Matches($raw, '-?\d+') | ForEach-Object { [int]$_.Value }
+        if ($nums.Count -eq 3) { $cx, $cy, $cz = $nums; break }
+        Write-Host '  Please type three whole numbers, e.g.  120 68 -340' -ForegroundColor Yellow
+    }
+}
+if ($FromSection -ne '') {
+    $found = -1
+    for ($i = 0; $i -lt $total; $i++) {
+        if ($items[$i].Section -like "*$FromSection*") { $found = $i; break }
+    }
+    if ($found -lt 0) { Write-Host "  No section matches '$FromSection'." -ForegroundColor Red; exit 1 }
+    $start = $found
+    Write-Host ("  Starting from section: {0}" -f $items[$found].Section) -ForegroundColor Cyan
+    Write-Host '  (Each section begins with its own teleport, so it does not matter where you stand.)'
+}
+$only = $null
+if ($Section -ne '') {
+    $only = @($secStart.Keys | Where-Object { $_ -like "*$Section*" })
+    if ($only.Count -eq 0) { Write-Host "  No section matches '$Section'." -ForegroundColor Red; exit 1 }
+    $start = [int](($only | ForEach-Object { $secStart[$_] } | Measure-Object -Minimum).Minimum)
+    Write-Host ("  Running only: {0}" -f ($only -join ', ')) -ForegroundColor Cyan
+}
+if ($cy + $yMin -lt -64 -or $cy + $yMax -gt 319) {
+    Write-Host ("  Y={0} is out of range: this build needs Y between {1} and {2}." -f $cy, (-64 - $yMin), (319 - $yMax)) -ForegroundColor Red
+    exit 1
+}
+
+function Resolve-Cmd([string]$text) {
+    return [regex]::Replace($text, '\$([xyz])\((-?[0-9.]+)\)', {
+        param($m)
+        $v = [double]::Parse($m.Groups[2].Value, $Inv)
+        switch ($m.Groups[1].Value) { 'x' { $v += $cx } 'y' { $v += $cy } 'z' { $v += $cz } }
+        if ($v -eq [Math]::Floor($v)) { return ([long]$v).ToString($Inv) }
+        return $v.ToString('0.###', $Inv)
+    })
+}
+
+if ($DryRun) {
+    $out = Join-Path $Here 'latveria_resolved.txt'
+    $sb = New-Object System.Text.StringBuilder
+    foreach ($it in $items) {
+        if ($it.Kind -eq 'cmd') { [void]$sb.AppendLine('/' + (Resolve-Cmd $it.Text)) }
+        else { [void]$sb.AppendLine('# wait ' + $it.Wait + ' ms: ' + $it.Text) }
+    }
+    [IO.File]::WriteAllText($out, $sb.ToString())
+    Write-Host "  Dry run: wrote $out" -ForegroundColor Green
+    exit 0
+}
+
+$queue = New-Object System.Collections.Generic.List[int]
+if ($start -gt 0 -and $start -lt $total) {
+    foreach ($k in (Get-Prelude $start)) { if ($k -lt $start) { $queue.Add($k) } }
+}
+for ($k = $start; $k -lt $total; $k++) {
+    if ($null -ne $only -and -not ($only -contains $items[$k].Section)) { continue }
+    $queue.Add($k)
+}
+
+# time estimate
+$perCmd = $ChatOpenMs + $DelayMs + 60
+$remainMs = 0
+foreach ($i in $queue) {
+    $it = $items[$i]
+    if ($it.Kind -eq 'cmd') { $remainMs += $perCmd + $it.Wait * $HeavyFactor } else { $remainMs += $it.Wait }
+}
+Write-Host ''
+Write-Host ("  Centre: {0} {1} {2}    starting at command {3}" -f $cx, $cy, $cz, ($start + 1))
+Write-Host ("  Estimated time: about {0:N0} minutes" -f ($remainMs / 60000))
+Write-Host ''
+Write-Host '  BEFORE YOU CONTINUE' -ForegroundColor Yellow
+Write-Host '   - you must be an operator (or have cheats on in single player)'
+Write-Host '   - creative or spectator mode is recommended: you are teleported to each district'
+Write-Host '   - render distance 10 chunks or more (the section around you must be loaded)'
+Write-Host '   - NOTHING is cleared: blocks go only into empty air or replace one exact old block;'
+Write-Host '     no gamerule or forceload is changed. A backup is still wise before any big edit.'
+Write-Host '   - F7 pauses / resumes, F10 stops. Alt-tabbing away pauses automatically.'
+Write-Host ''
+Read-Host '  Press Enter, then click into Minecraft (close any menus) within 10 seconds'
+for ($s = 10; $s -gt 0; $s--) { Write-Host -NoNewline ("`r  Starting in {0,2} s ... " -f $s); Start-Sleep -Seconds 1 }
+Write-Host ''
+[void][LatvInput]::Down($VK_F7); [void][LatvInput]::Down($VK_F10)   # clear stale key presses
+Write-Log ("start: centre {0} {1} {2}, index {3}" -f $cx, $cy, $cz, $start)
+
+# ---------------------------------------------------------------------------
+# the sender loop
+# ---------------------------------------------------------------------------
+function Save-Progress([int]$i) { Set-Content -Path $ProgressFile -Value ("{0} {1} {2} {3}" -f $cx, $cy, $cz, $i) }
+
+function Wait-Released([int]$vk) { while ([LatvInput]::Down($vk)) { Start-Sleep -Milliseconds 30 } }
+
+$paused = $false
+function Check-Controls([int]$i) {
+    # returns $false if the user asked to stop
+    if ([LatvInput]::Down($VK_F10)) {
+        Wait-Released $VK_F10
+        Save-Progress $i
+        Write-Host "`n  Stopped at command $($i + 1). Run the script again to resume." -ForegroundColor Yellow
+        Write-Log "stopped by user at $i"
+        return $false
+    }
+    if ([LatvInput]::Down($VK_F7)) {
+        Wait-Released $VK_F7
+        $script:paused = -not $script:paused
+        if ($script:paused) { Save-Progress $i; Write-Host "`n  PAUSED (F7 to resume, F10 to stop)" -ForegroundColor Yellow }
+        else { Write-Host "  resumed" -ForegroundColor Green; Start-Sleep -Milliseconds 800 }
+    }
+    return $true
+}
+
+$lastSection = ''
+$sent = 0
+$sw = [Diagnostics.Stopwatch]::StartNew()
+foreach ($i in $queue) {
+    $it = $items[$i]
+    if ($it.Section -ne $lastSection) {
+        $lastSection = $it.Section
+        Write-Host ("`n  [{0,5:N1}%]  {1}" -f (100.0 * $i / $total), $lastSection) -ForegroundColor Cyan
+    }
+    if (-not (Check-Controls $i)) { exit 0 }
+    while ($paused) {
+        Start-Sleep -Milliseconds 100
+        if (-not (Check-Controls $i)) { exit 0 }
+    }
+    if ($it.Kind -eq 'wait') {
+        Write-Host ("  waiting {0} s: {1}" -f [int]($it.Wait / 1000), $it.Text)
+        $end = (Get-Date).AddMilliseconds($it.Wait)
+        while ((Get-Date) -lt $end) {
+            Start-Sleep -Milliseconds 200
+            if (-not (Check-Controls $i)) { exit 0 }
+        }
+        continue
+    }
+
+    $cmd = '/' + (Resolve-Cmd $it.Text)
+    if ($cmd.Length -gt 256) {
+        Write-Host "  skipped (longer than chat allows): $cmd" -ForegroundColor Red
+        Write-Log "SKIPPED too long: $cmd"
+        continue
+    }
+
+    # never type unless Minecraft is the focused window
+    $warned = $false
+    while ([LatvInput]::ForegroundTitle() -notmatch [regex]::Escape($WindowMatch)) {
+        if (-not $warned) {
+            Write-Host "  Minecraft is not the active window - paused. Click back into the game to continue." -ForegroundColor Yellow
+            Save-Progress $i
+            $warned = $true
+        }
+        Start-Sleep -Milliseconds 250
+        if (-not (Check-Controls $i)) { exit 0 }
+    }
+    if ($warned) { Write-Host "  continuing" -ForegroundColor Green; Start-Sleep -Milliseconds 1500 }
+
+    for ($try = 0; $try -lt 5; $try++) {
+        try { Set-Clipboard -Value $cmd; break } catch { Start-Sleep -Milliseconds 50 }
+    }
+    [LatvInput]::Tap($VK_CHAT)
+    Start-Sleep -Milliseconds $ChatOpenMs
+    [LatvInput]::Chord($VK_CONTROL, $VK_A)
+    [LatvInput]::Chord($VK_CONTROL, $VK_V)
+    Start-Sleep -Milliseconds 30
+    [LatvInput]::Tap($VK_RETURN)
+    $sent++
+    Start-Sleep -Milliseconds ([int]($DelayMs + $it.Wait * $HeavyFactor))
+
+    if ($additive -or $sent % 25 -eq 0) { Save-Progress ($i + 1) }
+    if ($sent % 25 -eq 0) {
+        $rate = $sent / [Math]::Max(1, $sw.Elapsed.TotalSeconds)
+        $left = ($total - $i - 1) / [Math]::Max(0.1, $rate) / 60
+        Write-Progress -Activity 'Building Latveria' -Status ("{0} / {1}   {2}   (~{3:N0} min left)" -f ($i + 1), $total, $lastSection, $left) -PercentComplete (100.0 * ($i + 1) / $total)
+    }
+}
+Write-Progress -Activity 'Building Latveria' -Completed
+if ($null -eq $only -and (Test-Path $ProgressFile)) { Remove-Item $ProgressFile }
+Write-Log "finished"
+Write-Host ''
+Write-Host '  Refinement v3 is complete. Doom approves.' -ForegroundColor Green

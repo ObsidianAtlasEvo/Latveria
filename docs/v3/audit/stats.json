@@ -1,0 +1,98 @@
+{
+ "non_air_blocks": 2724270,
+ "bounds": [
+  -300,
+  -129,
+  -252,
+  300,
+  115,
+  240
+ ],
+ "entities": 293,
+ "entities_by_type": {
+  "villager": 137,
+  "armor_stand": 46,
+  "horse": 12,
+  "chicken": 11,
+  "cow": 10,
+  "sheep": 10,
+  "iron_golem": 10,
+  "glow_item_frame": 9,
+  "minecart": 8,
+  "pig": 7,
+  "bee": 5,
+  "cat": 5,
+  "oak_boat": 5,
+  "spruce_boat": 5,
+  "rabbit": 5,
+  "goat": 4,
+  "donkey": 1,
+  "cod": 1,
+  "salmon": 1,
+  "zombie": 1
+ },
+ "iron_golems": [
+  [
+   0,
+   0,
+   -21,
+   "Doombot"
+  ],
+  [
+   21,
+   0,
+   0,
+   "Doombot"
+  ],
+  [
+   -21,
+   0,
+   0,
+   "Doombot"
+  ],
+  [
+   0,
+   0,
+   26,
+   "Doombot"
+  ],
+  [
+   -138,
+   0,
+   6,
+   "Doombot"
+  ],
+  [
+   138,
+   0,
+   6,
+   "Doombot"
+  ],
+  [
+   6,
+   0,
+   98,
+   "Doombot"
+  ],
+  [
+   -20,
+   12,
+   -140,
+   "Doombot"
+  ],
+  [
+   20,
+   12,
+   -140,
+   "Doombot"
+  ],
+  [
+   0,
+   12,
+   -198,
+   "Doombot"
+  ]
+ ],
+ "block_states": 460,
+ "trees_unknown_shape": 82
+}

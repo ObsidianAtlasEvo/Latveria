@@ -1,0 +1,112 @@
+{
+ "structural_problems": [],
+ "commands": 2648,
+ "command_kinds": {
+  "tp (harmless)": 58,
+  "title (harmless)": 60,
+  "fill replace": 805,
+  "fill keep": 685,
+  "setblock keep": 902,
+  "guarded summon": 15,
+  "guarded two-part block": 46,
+  "guarded container item": 44,
+  "data (harmless)": 20,
+  "tag (harmless)": 8,
+  "item (harmless)": 5
+ },
+ "longest_command_chars": 244,
+ "longest_command": "execute unless entity @e[type=villager,name=\"Golem Works Hand 1\"] run summon villager $x(253.5) $y(9) $z(-88.5) {CustomName:\"Golem Works Hand 1\",VillagerData:{profession:\"minecraft:none\",level:1,type:\"minecraft:taiga\"},PersistenceRequired:1b}",
+ "cells_changed_by_v3": 16271,
+ "changed_bounds_rel": [
+  -246,
+  -9,
+  -209,
+  297,
+  80,
+  239
+ ],
+ "y_range_rel": [
+  -9.0,
+  80.0
+ ],
+ "non_air_blocks_before": 2724270,
+ "non_air_blocks_after": 2731165,
+ "entities_before": 293,
+ "entities_after": 301,
+ "entities_by_type_after": {
+  "villager": 141,
+  "armor_stand": 50,
+  "horse": 12,
+  "chicken": 11,
+  "cow": 10,
+  "sheep": 10,
+  "iron_golem": 10,
+  "glow_item_frame": 9,
+  "minecart": 8,
+  "pig": 7,
+  "bee": 5,
+  "cat": 5,
+  "oak_boat": 5,
+  "spruce_boat": 5,
+  "rabbit": 5,
+  "goat": 4,
+  "donkey": 1,
+  "cod": 1,
+  "salmon": 1,
+  "zombie": 1
+ },
+ "v3_entities": {
+  "armor_stand": 4,
+  "villager": 4
+ },
+ "support_cells_checked": 43631,
+ "idempotency": {
+  "blocks_changed_on_second_replay": 0,
+  "entities_added_on_second_replay": 0
+ },
+ "golem_works": {
+  "spawn attempts (villager cell x offset)": {
+   "no spawn position": 100,
+   "on the flooded pad": 2204,
+   "obstructed": 8
+  },
+  "rim water sources": 68,
+  "pad cells beyond water reach": 0,
+  "partition": {
+   "9,-90": "stone_bricks",
+   "9,-89": "stone_bricks",
+   "10,-90": "stone_bricks",
+   "10,-89": "air",
+   "11,-90": "stone_bricks",
+   "11,-89": "stone_bricks"
+  },
+  "pod floors": [
+   "glass"
+  ],
+  "crew": {
+   "Golem Works Hand 1": 1,
+   "Golem Works Hand 2": 1,
+   "Golem Works Hand 3": 1,
+   "The Frightener": 1
+  },
+  "beds": 3,
+  "iron golems within 40 blocks": 0
+ },
+ "darkness": {
+  "Hall of Shadows dark cells before": 25854,
+  "Hall of Shadows dark cells lit by v3": 0,
+  "dark spawnable cells in Deep Cells": 0,
+  "dark spawnable cells in Doombot proving ground": 0,
+  "dark spawnable cells in oriel study": 0,
+  "dark spawnable cells in observatory": 0
+ },
+ "new_dark_cells": {
+  "tiles_checked": 108,
+  "new_dark_spawnable_cells": 0
+ },
+ "mechanisms": {
+  "time chain lamps": 7,
+  "children's yard floor y": -3,
+  "sorter modules complete": 6
+ }
+}

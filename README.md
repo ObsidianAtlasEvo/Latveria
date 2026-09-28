@@ -138,6 +138,42 @@ adds, in order of preference:
 
 ---
 
+## Refinement v3 (fourth command file)
+
+Run **`windows/Build-Latveria-Refinement-V3.bat`** after the first three layers. It is preset to
+your centre (799 70 −10090), has **2,648 commands** in 59 sections, and takes about **15 minutes**.
+It is purely **additive**. Every command either places blocks only into air (`keep`), swaps one
+exact old block (`replace <old>`), or summons an entity only if a tagged one isn't already there.
+There are no gamerules, no forceloads and no kills. You are teleported to each district so its
+chunks are loaded. Every section can be run again on its own (`-Section "Golem"`), and resume
+is exact.
+
+* **Golem Works fixed.** Flooded pads, glass pod floors, one shuttered window between the
+  villagers and the zombie (closed at night so they sleep), and an off lever. Spawn attempts are
+  simulated: all 2,204 that find a spot land on the pad.
+* **Castle Doom.** An asymmetric roofscape (arcane spire, radio mast, copper observatory, chimneys,
+  lab stacks), era weathering, throne dispensers, a spy loft, laboratory zones, a war-room map,
+  the **throne hatch** (sticky piston), the **Time Platform lamp sequence**, tapestry passages, an
+  oriel study, the **Deep Cells** (linked to the escape tunnel), and a Doombot proving ground. Your
+  own factory room is untouched, cell for cell.
+* **Doomstadt.** A Chancery and a Palace of Justice at the foot of the Grand Stair, a Market Square
+  with stallholders, a public garden and Decree Wall, back yards themed by quarter, street names,
+  and worn setts.
+* **Districts.** A nursery baby exit and Children's Yard (plus an optional bed reset), the
+  **Sorting Office** item sorter (nothing is ever destroyed), Foundry output lamps, harbour shoals
+  and a fish market, a windmill, a manor greenhouse, station shelters, alarm bells, and the
+  southern approach.
+
+Read [docs/v3/REFINEMENT_V3.md](docs/v3/REFINEMENT_V3.md) for the full guide and the live-test
+list, [docs/v3/AUDIT.md](docs/v3/AUDIT.md) for the audit of the executed world, and
+[docs/v3/VERIFICATION_REPORT.md](docs/v3/VERIFICATION_REPORT.md) for the numbers.
+`python generator/build_refinement.py && python generator/verify3.py` reports **0 structural
+problems**. None of it has been run in Minecraft yet.
+
+![Castle before/after](docs/v3/after/before_after_castle_south.png)
+
+---
+
 ## What gets built
 
 ### Castle Doom (north, on a 12-block crag)
@@ -253,6 +289,12 @@ generator/          Python generator (no dependencies) + optional preview/verify
   build_lighting.py -> writes windows/latveria_lighting_commands.txt (needs numpy)
   lighting.py       the lighting overhaul (designed features + light-level pass)
   lightmap.py       renders docs/light_*.png before/after light maps
+  build_refinement.py -> writes windows/latveria_refinement_v3_commands.txt (needs numpy)
+  v3core.py         guarded additive builder (keep / replace / idempotent summons / relight)
+  v3_*.py           the Refinement v3 content (golem, castle, secrets, city, districts)
+  verify3.py        v3 verifier: hygiene, supports, idempotency, darkness, Golem Works simulation
+  audit3.py         audit / after renders (docs/v3/audit, docs/v3/after); render3.py draws them
+  report3.py        writes docs/v3/VERIFICATION_REPORT.md
   core.py           command engine: validation, chat-length splitting, coordinate tokens
   terrain.py        clearing, crag, moat, Grand Stair
   castle.py         walls, towers, gatehouse, courtyard buildings
