@@ -9,7 +9,7 @@ three files.
 | Command file | `windows/latveria_refinement_v3_commands.txt` |
 | Launcher | `windows/Build-Latveria-Refinement-V3.bat` (preset centre **799 70 −10090**, override with `-Centre "x y z"`) |
 | Sender | `windows/Build-Latveria-Refinement-V3.ps1` (a copy of the original sender with additive-mode resume and section runs) |
-| Commands | **2,648** in **59 sections** |
+| Commands | **2,581** in **59 sections** |
 | Estimated run time | about **15 minutes** at the default pace, of which 5.8 minutes are chunk-loading waits after each teleport |
 | Optional extra | `windows/Reset-Nursery-Beds-V3.bat` → `latveria_v3_nursery_reset_commands.txt` (38 commands) |
 | Generator | `generator/build_refinement.py` + `v3core.py`, `v3_golem.py`, `v3_castle.py`, `v3_secrets.py`, `v3_city.py`, `v3_districts.py` |
@@ -27,6 +27,12 @@ Before running v3, read [AUDIT.md](AUDIT.md). The numbers are in [VERIFICATION_R
 3. Click into Minecraft. The sender teleports you to each district in turn (`tp @s …`), waits 6 s
    for its chunks, and then builds. F7 pauses and resumes, F10 stops, and alt-tabbing pauses.
 
+Chat will show each command's feedback. An occasional **"No blocks were filled"** or **"Could not
+set the block"** is expected and harmless. It means the spot already held something (for
+example, the Golem Works troughs are filled with `replace water` and then `replace air`, so one of
+the two finds nothing), or you have changed it since, so v3 left it alone. Commands the model
+already knew would change nothing were removed from the file.
+
 Options (add them after the `.bat` name, or use them with the `.ps1`):
 
 | Option | Effect |
@@ -40,13 +46,13 @@ Options (add them after the `.bat` name, or use them with the `.ps1`):
 ## The safety rules every command follows
 
 There are no gamerules, no forceloads, no kills, no `clone` and no unguarded `setblock` or `fill`.
-`verify3.py` checks every one of the 2,648 lines against this list:
+`verify3.py` checks every one of the 2,581 lines against this list:
 
 | Form | Used for | Count |
 |---|---|---|
 | `setblock … keep` | every new single block (only into air) | 902 |
 | `fill … keep` | every new volume (only into air cells) | 685 |
-| `fill … <new> replace <old>` | swaps: the change happens only where the expected old block still stands. Carving the crag for new rooms uses `air replace <stone/dirt/andesite/…>`, after the model confirmed the volume holds nothing else. | 805 |
+| `fill … <new> replace <old>` | swaps: the change happens only where the expected old block still stands. Carving the crag for new rooms uses `air replace <stone/dirt/andesite/…>`, after the model confirmed the volume holds nothing else. | 738 |
 | `execute if block A air if block B air run setblock A … strict` (+ second half) | doors, beds and double chests, only when both cells are free | 46 |
 | `execute unless entity @e[tag=lv3_<id>] run summon …` | the 8 new entities, each summoned once | 8 |
 | `execute unless entity @e[type=…,name="…"] run summon …` | re-summons the Golem Works crew or the nursery adults only if one is missing | 7 |

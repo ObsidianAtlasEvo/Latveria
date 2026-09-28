@@ -1,10 +1,10 @@
 {
  "structural_problems": [],
- "commands": 2648,
+ "commands": 2581,
  "command_kinds": {
   "tp (harmless)": 58,
   "title (harmless)": 60,
-  "fill replace": 805,
+  "fill replace": 738,
   "fill keep": 685,
   "setblock keep": 902,
   "guarded summon": 15,

@@ -222,7 +222,7 @@ class V3:
             self.stats["fill_keep"] += 1
         self._op("keep", box, go)
 
-    def swap(self, x1, y1, z1, x2, y2, z2, new, old, expect=1):
+    def swap(self, x1, y1, z1, x2, y2, z2, new, old, expect=1, always=False):
         """Replace cells that hold `old` (a block name, optionally with states) by `new`."""
         check_block(new)
         check_block(old)
@@ -243,6 +243,9 @@ class V3:
 
         def go():
             ids, n = count()                # counted again: inside a piece the old block may be the piece's own
+            if n == 0 and not always:
+                self.stats["noop_swaps_dropped"] += 1
+                return                      # nothing to swap: the command would only print an error in chat
             if n < expect:
                 self.problems.append("%s: replace %s->%s in %s finds %d cells (expected >= %d)" % (sec, old, new, box, n, expect))
                 return

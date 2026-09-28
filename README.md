@@ -141,7 +141,7 @@ adds, in order of preference:
 ## Refinement v3 (fourth command file)
 
 Run **`windows/Build-Latveria-Refinement-V3.bat`** after the first three layers. It is preset to
-your centre (799 70 −10090), has **2,648 commands** in 59 sections, and takes about **15 minutes**.
+your centre (799 70 −10090), has **2,581 commands** in 59 sections, and takes about **15 minutes**.
 It is purely **additive**. Every command either places blocks only into air (`keep`), swaps one
 exact old block (`replace <old>`), or summons an entity only if a tagged one isn't already there.
 There are no gamerules, no forceloads and no kills. You are teleported to each district so its

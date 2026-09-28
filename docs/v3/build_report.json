@@ -1,5 +1,5 @@
 {
- "commands": 2648,
+ "commands": 2581,
  "sections": [
   "Golem Works rework",
   "Castle Doom - the roofscape",
@@ -63,7 +63,7 @@
  ],
  "structural_problems": [],
  "stats": {
-  "swap": 698,
+  "swap": 631,
   "swapped_cells": 3342,
   "fill_keep": 685,
   "put": 878,
@@ -74,6 +74,7 @@
   "pair": 23,
   "stock": 44,
   "books": 9,
+  "noop_swaps_dropped": 67,
   "singles_skipped": 11,
   "summon": 8,
   "carve": 34
@@ -193,5 +194,5 @@
  ],
  "entities_before": 293,
  "entities_after": 301,
- "generator_seconds": 7.0
+ "generator_seconds": 6.8
 }

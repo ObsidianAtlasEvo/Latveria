@@ -40,7 +40,7 @@ def build(v):
     # 1. flush pad floor (the old channels held water sources at their outer ends + flowing water)
     arms = [(252, -98, 253, -91), (252, -88, 253, -81), (244, -90, 251, -89), (254, -90, 261, -89)]
     for (x1, z1, x2, z2) in arms:
-        v.swap(x1, 4, z1, x2, 4, z2, "stone_bricks", "water", expect=0)
+        v.swap(x1, 4, z1, x2, 4, z2, "stone_bricks", "water", expect=0, always=True)   # flowing water: unknown to the model
         v.b.fill(x1, 4, z1, x2, 4, z2, "stone_bricks", mode="replace air")   # flowing water is air in the model
         v.w.apply("fill %s %s stone_bricks replace air" % (pos(x1, 4, z1), pos(x2, 4, z2)))
         v.stats["swap"] += 1
