@@ -2697,8 +2697,8 @@
 0	tp @s $x(0.5) $y(12) $z(-105.5)
 0	title @s actionbar {text:"Refinement v3: Castle Doom - the alarm bells",color:"dark_green"}
 !wait	6000	loading Castle Doom - the alarm bells
-0	setblock $x(-2) $y(20) $z(-110) bell[attachment=ceiling,facing=north] keep
-0	setblock $x(2) $y(20) $z(-110) bell[attachment=ceiling,facing=north] keep
+0	setblock $x(-2) $y(21) $z(-111) bell[attachment=ceiling,facing=north] keep
+0	setblock $x(2) $y(21) $z(-111) bell[attachment=ceiling,facing=north] keep
 !section	The approach - boundary stones, trees and a shrine
 0	tp @s $x(0.5) $y(0) $z(176.5)
 0	title @s actionbar {text:"Refinement v3: The approach - boundary stones, trees and a shrine",color:"dark_green"}

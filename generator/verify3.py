@@ -127,6 +127,11 @@ def support(w, changed, problems):
     def solid(s):
         return s.split("[", 1)[0] not in NONSUPPORT
 
+    def full(s):
+        nm = s.split("[", 1)[0]
+        return solid(s) and not nm.endswith(("lantern", "_slab", "_stairs", "_fence", "_wall", "_pane", "bars", "chain",
+                                             "_trapdoor", "_door", "_sign", "_banner", "ladder", "torch", "_carpet"))
+
     for (i, j, k) in cells:
         x, y, z = i + w.X0, j + w.Y0, k + w.Z0
         s = at(x, y, z)
@@ -150,6 +155,20 @@ def support(w, changed, problems):
                     kind = "hanging lantern floating"
             elif not solid(at(x, y - 1, z)):
                 kind = "lantern floating"
+        elif n == "bell":
+            at_ = p.get("attachment")
+            up = at(x, y + 1, z)
+            if at_ == "ceiling" and not (full(up) or up.split("[", 1)[0].endswith("_slab") and "type=top" not in up):
+                kind = "bell unsupported"
+            elif at_ == "floor" and not full(at(x, y - 1, z)):
+                kind = "bell unsupported"
+        elif n.endswith(("_skull", "_head")) and "wall" not in n or n in ("anvil", "chipped_anvil", "damaged_anvil",
+                                                                          "decorated_pot", "flower_pot", "cauldron"):
+            if not solid(at(x, y - 1, z)) and n not in ("anvil", "chipped_anvil", "damaged_anvil"):
+                kind = "floor item floating"
+        elif n in ("sand", "gravel", "red_sand") or n.endswith(("concrete_powder", "anvil")):
+            if at(x, y - 1, z).split("[", 1)[0] in NONSUPPORT:
+                kind = "gravity block over nothing"
         elif n in ("wheat", "carrots", "potatoes", "beetroots"):
             if at(x, y - 1, z).split("[")[0] != "farmland":
                 kind = "crop not on farmland"

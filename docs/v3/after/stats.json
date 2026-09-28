@@ -1,5 +1,5 @@
 {
- "non_air_blocks": 2731215,
+ "non_air_blocks": 2731165,
  "bounds": [
   -300,
   -129,
@@ -93,6 +93,6 @@
    "Doombot"
   ]
  ],
- "block_states": 567,
+ "block_states": 571,
  "trees_unknown_shape": 82
 }

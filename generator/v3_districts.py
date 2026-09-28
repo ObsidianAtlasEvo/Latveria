@@ -419,7 +419,7 @@ def defence(v):
     v.section("castle_alarm", "Castle Doom - the alarm bells", (0, 12, -106))
     # bells hang under the gate-room floor over the passage, one per side
     for x in (-2, 2):
-        v.put(x, 20, -110, "bell[attachment=ceiling,facing=north]")
+        v.put(x, 21, -111, "bell[attachment=ceiling,facing=north]")      # under the gate-room floor
     v.mechanism("Town gate arrow batteries", "structurally verified",
                 "Each battery's dispensers fire only when its lever is pulled (v2 design); no pressure plates or "
                 "tripwires anywhere, so friendly players cannot trigger them.")
